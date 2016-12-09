@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.BufferedInputStream;
@@ -14,11 +15,14 @@ import javax.swing.JPanel;
 public class frame extends JFrame {
 
 	ImageIcon icon;
-	JPanel contentPane;
+	static JPanel contentPane;
 	static JPanel mb1;
 	static JPanel mb2;
 	static JPanel mb3;
+	static JPanel moon_b;
+	static JPanel sun_b;
 	static JPanel moon;
+	static JPanel sun;
 
 	frame() {
 		setTitle("Pocketmon Center");
@@ -27,7 +31,7 @@ public class frame extends JFrame {
 		contentPane = new JPanel() {
 			public void paintComponent(Graphics g) {// Graphics객체는 그릴수 있는 도구.
 				// 이미지처리. 배경
-				Image backImg = new ImageIcon("image.png").getImage();
+				Image backImg = new ImageIcon("background.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 				setOpaque(false);
 			}
@@ -62,11 +66,35 @@ public class frame extends JFrame {
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
+		moon_b = new JPanel() {
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				setSize(70,70);
+				Image backImg = new ImageIcon("moon_b.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		sun_b = new JPanel() {
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				setSize(80,80);
+				Image backImg = new ImageIcon("sun_b.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
 		moon = new JPanel() {
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				setSize(70,70);
 				Image backImg = new ImageIcon("moon.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		sun = new JPanel() {
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				setSize(80,80);
+				Image backImg = new ImageIcon("sun.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
@@ -89,12 +117,30 @@ public class frame extends JFrame {
 		moon.setSize(10, 120);
 		moon.setLayout(null);
 		moon.setBounds(1754, 324, 115, 110);
-		moon.setVisible(true);
+		moon.setVisible(false);
+		
+		sun.setSize(10, 120);
+		sun.setLayout(null);
+		sun.setBounds(1614, 319, 115, 110);
+		sun.setVisible(false);
+		
+		moon_b.setSize(10, 120);
+		moon_b.setLayout(null);
+		moon_b.setBounds(1754, 324, 115, 110);
+		moon_b.setVisible(true);
+		
+		sun_b.setSize(10, 120);
+		sun_b.setLayout(null);
+		sun_b.setBounds(1614, 319, 115, 110);
+		sun_b.setVisible(true);
 		
 		contentPane.add(mb1);
 		contentPane.add(mb2);
 		contentPane.add(mb3);
+		contentPane.add(moon_b);
+		contentPane.add(sun_b);
 		contentPane.add(moon);
+		contentPane.add(sun);
 
 		init();
 	}
@@ -158,5 +204,29 @@ public class frame extends JFrame {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public static void startOfficeGoing()
+	{
+		sun_b.setVisible(false);
+		sun.setVisible(true);
+	}
+	
+	public static void endOfficeGoing()
+	{
+		sun.setVisible(false);
+		sun_b.setVisible(true);
+	}
+	
+	public static void startQuittingTime()
+	{
+		moon_b.setVisible(false);
+		moon.setVisible(true);
+	}
+	
+	public static void endQuittingTime()
+	{
+		moon.setVisible(false);
+		moon_b.setVisible(true);
 	}
 }
