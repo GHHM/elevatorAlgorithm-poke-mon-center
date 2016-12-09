@@ -1,39 +1,59 @@
-import java.applet.AudioClip;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.FlowLayout;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.PrintWriter;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
 
 public class frame extends JFrame {
 
 	ImageIcon icon;
-	JPanel bg = new JPanel();
+	JPanel contentPane;
 	
 	frame() {
 		setTitle("Pocketmon Center");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-		makeUI();
+		
+		contentPane = new JPanel(){
+			public void paintComponent(Graphics g) {// Graphics객체는 그릴수 있는 도구.
+				// 이미지처리. 배경
+				Image backImg = new ImageIcon("image1.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+				setOpaque(false);
+			}
+		};
+	
+		contentPane.setVisible(true);
+		setContentPane(contentPane);
+		setLayout(null);
+		setUndecorated(true);
 		setSize(1920, 1080);
 		setResizable(false);
 		setVisible(true);
+		
+		JPanel monsterball = new JPanel(){
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				Image backImg = new ImageIcon("monsterball.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		
+		contentPane.add(monsterball);
+		monsterball.setSize(110, 105);
+		monsterball.setLayout(null);
+		monsterball.setBounds(100
+				, 100, 110, 105);
+		monsterball.setVisible(true);
+		
+
+	
 		init();
 	}
 
@@ -57,29 +77,9 @@ public class frame extends JFrame {
 		}
 	}
 
-	public void paint(Graphics g) {// Graphics객체는 그릴수 있는 도구.
-		// 이미지처리. 배경
-		Image backImg = new ImageIcon("image.png").getImage();
-		g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
-	}
-
 	private void makeUI() {
-		this.setLayout(null);
-		this.setUndecorated(true);
 		
-		JPanel monsterball = new JPanel(){
-			public void paintComponent(Graphics g) {// Graphics객체는 그릴수 있는 도구.
-				// 이미지처리. 배경
-				super.paint(g);
-				this.setOpaque(false);
-				Image backImg = new ImageIcon("monsterball.png").getImage();
-				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
-			}
-		};
-		monsterball.setSize(110, 105);
-		monsterball.setLayout(null);
-		monsterball.setBounds(100,100,100,100);
-		monsterball.setVisible(true);
+	
 	}
 
 }
