@@ -37,23 +37,48 @@ public class frame extends JFrame {
 		setResizable(false);
 		setVisible(true);
 		
-		JPanel monsterball = new JPanel(){
+		JPanel mb1 = new JPanel(){
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-		
-		contentPane.add(monsterball);
-		monsterball.setSize(110, 105);
-		monsterball.setLayout(null);
-		monsterball.setBounds(100
-				, 100, 110, 105);
-		monsterball.setVisible(true);
-		
+		JPanel mb2 = new JPanel(){
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				Image backImg = new ImageIcon("monsterball.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		JPanel mb3 = new JPanel(){
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				Image backImg = new ImageIcon("monsterball.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
 
-	
+		mb1.setSize(120, 120);
+		mb1.setLayout(null);
+		mb1.setBounds(273, 80, 115, 110);
+		mb1.setVisible(true);
+		
+		mb2.setSize(120, 120);
+		mb2.setLayout(null);
+		mb2.setBounds(619, 80, 115, 110);
+		mb2.setVisible(true);
+
+		mb3.setSize(1700, 120);
+		mb3.setLayout(null);
+		mb3.setBounds(980, 80, 115, 110);
+		mb3.setVisible(true);
+		
+		contentPane.add(mb1);
+		contentPane.add(mb2);
+		contentPane.add(mb3);
+				
+
 		init();
 	}
 
