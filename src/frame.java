@@ -18,6 +18,7 @@ public class frame extends JFrame {
 	static JPanel mb1;
 	static JPanel mb2;
 	static JPanel mb3;
+	static JPanel moon;
 
 	frame() {
 		setTitle("Pocketmon Center");
@@ -61,6 +62,14 @@ public class frame extends JFrame {
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
+		moon = new JPanel() {
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				setSize(70,70);
+				Image backImg = new ImageIcon("moon.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
 
 		mb1.setSize(120, 120);
 		mb1.setLayout(null);
@@ -77,9 +86,15 @@ public class frame extends JFrame {
 		mb3.setBounds(980, 80, 115, 110);
 		mb3.setVisible(true);
 
+		moon.setSize(10, 120);
+		moon.setLayout(null);
+		moon.setBounds(1754, 324, 115, 110);
+		moon.setVisible(true);
+		
 		contentPane.add(mb1);
 		contentPane.add(mb2);
 		contentPane.add(mb3);
+		contentPane.add(moon);
 
 		init();
 	}
@@ -110,39 +125,38 @@ public class frame extends JFrame {
 
 	public static void moveElevatorUP(int i) {
 
-		for(int j=0;j<180;j++){
-			if(i==1)
-				mb1.setBounds(273, mb1.getY()-1, 115, 110);
-			else if(i==2)
-				mb2.setBounds(619, mb2.getY()-1, 115, 110);
+		for (int j = 0; j < 180; j++) {
+			if (i == 1)
+				mb1.setBounds(273, mb1.getY() - 1, 115, 110);
+			else if (i == 2)
+				mb2.setBounds(619, mb2.getY() - 1, 115, 110);
 			else
-				mb3.setBounds(980, mb3.getY()-1, 115, 110);
-		try {
-			Thread.sleep(5);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				mb3.setBounds(980, mb3.getY() - 1, 115, 110);
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
-}
-	
+
 	public static void moveElevatorDOWN(int i) {
 
-		for(int j=0;j<180;j++){
-			if(i==1)
-				mb1.setBounds(273, mb1.getY()+1, 115, 110);
-			else if(i==2)
-				mb2.setBounds(619, mb2.getY()+1, 115, 110);
+		for (int j = 0; j < 180; j++) {
+			if (i == 1)
+				mb1.setBounds(273, mb1.getY() + 1, 115, 110);
+			else if (i == 2)
+				mb2.setBounds(619, mb2.getY() + 1, 115, 110);
 			else
-				mb3.setBounds(980, mb3.getY()+1, 115, 110);
-			
-		try {
-			Thread.sleep(5);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+				mb3.setBounds(980, mb3.getY() + 1, 115, 110);
+
+			try {
+				Thread.sleep(5);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 	}
-}
-	
 }
