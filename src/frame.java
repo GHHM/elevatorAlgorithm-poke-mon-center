@@ -30,10 +30,9 @@ public class frame extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		makeUI();
-		setSize(1600, 1000);
+		setSize(1920, 1080);
 		setResizable(false);
 		setVisible(true);
-
 		init();
 	}
 
@@ -65,8 +64,9 @@ public class frame extends JFrame {
 
 	private void makeUI() {
 		this.setLayout(null);
-		this.setBounds(100, 0, 1024, 768);
-
+		this.setUndecorated(true);
+		JPanel floor = new JPanel();
+		//floor.setBounds(0,0,0);
 	}
 
 }

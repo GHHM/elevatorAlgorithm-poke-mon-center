@@ -1,6 +1,8 @@
 import java.util.Comparator;
 import java.util.PriorityQueue;
 
+import javax.swing.JFrame;
+
 public class Main {
 
 	public static void main(String[] args) throws Exception {
@@ -11,7 +13,7 @@ public class Main {
 		int currentTime=0, totalTime = 2000;
 		person[0] = new PersonInfo(0,0,0);
 		
-		new frame();
+		frame f = new frame();
 		
 		for(int i=1;i<person.length;i++)
 		{
