@@ -9,7 +9,7 @@ public class Elevator {
       private Direction Emergency = Direction.IDLE;
       private int firstPressedFloor=0;
       private int floor=1; //all elevators start on the first floor
-      public static final int NUM_OF_STORIES = 7;
+      public static final int NUM_OF_STORIES = 5;
       public int ElevatorNum=0;
       public int personNum=0;
       public int EwaitTime=0;//엘레베이터가 열렸을 때 기다리는 시간 조절용!
@@ -20,9 +20,9 @@ public class Elevator {
     	   if(num==1)
     		   this.floor = 1;
     	   else if(num==2)
-    		   this.floor = NUM_OF_STORIES/2;
+    		   this.floor = 3;
     	   else
-    		   this.floor = NUM_OF_STORIES;//*///잠시 전부 다 1층으로 바꿀게여 
+    		   this.floor = 5;//*///잠시 전부 다 1층으로 바꿀게여 
        }
        
        private PriorityQueue<Integer> requests = new PriorityQueue<Integer>(NUM_OF_STORIES, new Comparator<Integer>(){
@@ -66,9 +66,15 @@ public class Elevator {
        //move the elevator up or down one floor
        public void move(){
           if (direction == Direction.UP && floor < NUM_OF_STORIES)
-               floor += 1;
+          {
+        	  frame.moveElevatorUP(ElevatorNum);
+        	  floor++;
+          }
           else if (direction == Direction.DOWN && floor > 1)
-               floor -= 1;
+          {
+        	  frame.moveElevatorDOWN(ElevatorNum);
+        	  floor--;
+          }
        }
        
        public void getPassengers(PersonInfo[] person,int floor,int currentTime){

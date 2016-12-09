@@ -7,31 +7,26 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		Control newC = new Control();
-		PersonInfo[] person = new PersonInfo[601];
+		PersonInfo[] person = new PersonInfo[201];
 
 		int source=0,dest=0;
-		int currentTime=0, totalTime = 2000;
+		int currentTime=0, totalTime = 800;
 		person[0] = new PersonInfo(0,0,0);
 		
 		frame f = new frame();
 		
 		for(int i=1;i<person.length;i++)
 		{
-			source= (int)(Math.random() * 7)+1;
-			if(source==21)
-				source--;
-			dest= (int)(Math.random() * 7)+1;
-			if(dest==21)
-				dest--;
-			if(source==dest&&source<=5)
-				dest+=2;
-			else if(source==dest&&source>5)
-				dest-=2;
+			source= (int)(Math.random() * 5)+1;
+			dest= (int)(Math.random() * 5)+1;
+			if(source==dest&&source<=3)
+				dest+=1;
+			else if(source==dest&&source>3)
+				dest-=1;
 			person[i] = new PersonInfo(source,dest,i);
 			person[i].time =(int)(Math.random() * (totalTime*0.7));
 			if(i%500==0&&i!=0)
 				person[i].Emergency= Direction.EMERGENCY;
-			f.moveElevator(i);
 		}
 		int a=0;
 		while(currentTime!=totalTime)
