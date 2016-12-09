@@ -7,7 +7,7 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		Control newC = new Control();
-		PersonInfo[] person = new PersonInfo[1001];
+		PersonInfo[] person = new PersonInfo[601];
 
 		int source=0,dest=0;
 		int currentTime=0, totalTime = 2000;
@@ -31,6 +31,7 @@ public class Main {
 			person[i].time =(int)(Math.random() * (totalTime*0.7));
 			if(i%500==0&&i!=0)
 				person[i].Emergency= Direction.EMERGENCY;
+			f.moveElevator(i);
 		}
 		int a=0;
 		while(currentTime!=totalTime)

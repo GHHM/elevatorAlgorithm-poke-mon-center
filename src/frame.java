@@ -15,12 +15,13 @@ public class frame extends JFrame {
 
 	ImageIcon icon;
 	JPanel contentPane;
-	
+	JPanel mb2;
+
 	frame() {
 		setTitle("Pocketmon Center");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		contentPane = new JPanel(){
+
+		contentPane = new JPanel() {
 			public void paintComponent(Graphics g) {// Graphics객체는 그릴수 있는 도구.
 				// 이미지처리. 배경
 				Image backImg = new ImageIcon("image1.png").getImage();
@@ -28,7 +29,7 @@ public class frame extends JFrame {
 				setOpaque(false);
 			}
 		};
-	
+
 		contentPane.setVisible(true);
 		setContentPane(contentPane);
 		setLayout(null);
@@ -36,22 +37,22 @@ public class frame extends JFrame {
 		setSize(1920, 1080);
 		setResizable(false);
 		setVisible(true);
-		
-		JPanel mb1 = new JPanel(){
+
+		JPanel mb1 = new JPanel() {
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-		JPanel mb2 = new JPanel(){
+		mb2 = new JPanel() {
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-		JPanel mb3 = new JPanel(){
+		JPanel mb3 = new JPanel() {
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
@@ -63,21 +64,20 @@ public class frame extends JFrame {
 		mb1.setLayout(null);
 		mb1.setBounds(273, 80, 115, 110);
 		mb1.setVisible(true);
-		
+
 		mb2.setSize(120, 120);
 		mb2.setLayout(null);
 		mb2.setBounds(619, 80, 115, 110);
 		mb2.setVisible(true);
 
-		mb3.setSize(1700, 120);
+		mb3.setSize(10, 120);
 		mb3.setLayout(null);
 		mb3.setBounds(980, 80, 115, 110);
 		mb3.setVisible(true);
-		
+
 		contentPane.add(mb1);
 		contentPane.add(mb2);
 		contentPane.add(mb3);
-				
 
 		init();
 	}
@@ -103,8 +103,21 @@ public class frame extends JFrame {
 	}
 
 	private void makeUI() {
-		
-	
+
+	}
+
+	public void moveElevator(int i) {
+
+		for(int j=0;j<180;j+=5){
+		mb2.setBounds(619, 800 - j, 115, 110);
+		try {
+			Thread.sleep(20);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		repaint();
+	}
 	}
 
 }
