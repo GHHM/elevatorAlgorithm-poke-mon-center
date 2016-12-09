@@ -24,7 +24,8 @@ import javax.swing.border.EmptyBorder;
 public class frame extends JFrame {
 
 	ImageIcon icon;
-
+	JPanel bg = new JPanel();
+	
 	frame() {
 		setTitle("Pocketmon Center");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,8 +66,20 @@ public class frame extends JFrame {
 	private void makeUI() {
 		this.setLayout(null);
 		this.setUndecorated(true);
-		JPanel floor = new JPanel();
-		//floor.setBounds(0,0,0);
+		
+		JPanel monsterball = new JPanel(){
+			public void paintComponent(Graphics g) {// Graphics객체는 그릴수 있는 도구.
+				// 이미지처리. 배경
+				super.paint(g);
+				this.setOpaque(false);
+				Image backImg = new ImageIcon("monsterball.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		monsterball.setSize(110, 105);
+		monsterball.setLayout(null);
+		monsterball.setBounds(100,100,100,100);
+		monsterball.setVisible(true);
 	}
 
 }
