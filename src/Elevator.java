@@ -4,29 +4,29 @@ import java.util.PriorityQueue;
  
 
 public class Elevator {
-      private Direction direction = Direction.IDLE;
-      private Direction firstDirection = Direction.IDLE;
+      private Direction direction = Direction.IDLE;//엘리베이터가 현재 움직이는 방향
+      private Direction firstDirection = Direction.IDLE;//idle일 때 예를 들어 엘리베이터가 올라오고 있지만 나는 내려가고 싶을 때를 위해 넣은 방향! 나중엔 두개가 같아짐.
       private Direction Emergency = Direction.IDLE;
-      private int firstPressedFloor=0;
-      private int floor=1; //all elevators start on the first floor
-      public static final int NUM_OF_STORIES = 5;
+      private int firstPressedFloor=0;//idle일 때 맨 처음으로 누른 층!
+      private int floor;//엘리베이터의 현재 층
+      public static final int Top_Of_Floors = 5;//맨 꼭대기 층
       public int ElevatorNum=0;
       public int personNum=0;
-      public int EwaitTime=0;//엘레베이터가 열렸을 때 기다리는 시간 조절용!
+      public int EwaitTime=0;//엘리베이터가 열렸을 때 기다리는 시간 조절용!
        Elevator(int num)
        {
     	   this.ElevatorNum = num;
     	   this.personNum=0;
-    	   if(num==1)
+    	   if(num==1)//엘베를 135에 위치하도록 해서 사람들의 request를 효과적으로 처리할 수 있도록 함.
     		   this.floor = 1;
     	   else if(num==2)
     		   this.floor = 3;
     	   else
-    		   this.floor = 5;//*///잠시 전부 다 1층으로 바꿀게여 
+    		   this.floor = 5;
        }
        
-       private PriorityQueue<Integer> requests = new PriorityQueue<Integer>(NUM_OF_STORIES, new Comparator<Integer>(){
-              public int compare(Integer a,Integer b){
+       private PriorityQueue<Integer> requests = new PriorityQueue<Integer>(Top_Of_Floors, new Comparator<Integer>(){
+              public int compare(Integer a,Integer b){//리퀘스트를 min heap max heap으로 정리해주는 과정!
                      if (direction == Direction.DOWN){
                            if (a < b)
                                   return 1;
@@ -43,15 +43,15 @@ public class Elevator {
               }
        });
       
-       //A button is pressed INSIDE the elevator to request a floor. 
+       
        public void addRequest(int floor){
-          if (!requests.contains(floor)){ //only continue if the requested floor is not already in requests
-             if (requests.isEmpty()){ //if this is the only request, set the direction based on where the request is going
+          if (!requests.contains(floor)){ 
+             if (requests.isEmpty()){ 
                 if (this.floor < floor)
                    setDirection(Direction.UP);
                 else if (this.floor > floor)
                    setDirection(Direction.DOWN);
-                else //request is same as current floor
+                else //같은 경우
                    setDirection(this.firstDirection);
              }
           requests.add(floor);
@@ -60,12 +60,12 @@ public class Elevator {
        
        public void removeRequest(int floor){
           if (requests.contains(floor))
-             requests.remove(); // the head of the priority queue is removed
+             requests.remove(); 
        }
       
-       //move the elevator up or down one floor
+       
        public void move(){
-          if (direction == Direction.UP && floor < NUM_OF_STORIES)
+          if (direction == Direction.UP && floor < Top_Of_Floors)
           {
         	  frame.moveElevatorUP(ElevatorNum);
         	  floor++;
@@ -78,11 +78,11 @@ public class Elevator {
        }
        
        public void getPassengers(PersonInfo[] person,int floor,int currentTime){
-          this.removeRequest(floor);
+          this.removeRequest(floor);//일단 도착하면 탈 애가 있던 없던 리퀘스트를 지워야 하므로 가장 먼저 지움.
 		  if(this.firstPressedFloor==this.getFloor())
-		  {
-			  this.setFirstPressedFloor(0);
-			  this.setDirection(this.getFirstDirection());
+		  {//idle이지만 내가 가고 싶은 방향과 지금 현재 엘리베이터의 방향이 다를 수도 있으므로
+			  this.setFirstPressedFloor(0);//값을 초기화 해주고
+			  this.setDirection(this.getFirstDirection());//앞으로 움직일 방향으로 엘리베이터의 방향을 바꿔줌.
 		  }
           for(int i=0;i<person.length;i++)
           {
@@ -90,39 +90,49 @@ public class Elevator {
         		  if(person[i].time<=currentTime&&person[i].direction==this.getFirstDirection()){
         			  if(person[i].getEntered()!=1&&person[i].getSource()==this.getFloor()){//엘베에 태우는 코드
         			  
-        				 if(this.personNum<15)
+        				  if(this.isEmergency())
+        				  {//응급상황인 경우 아무리 이 조건에 일치한다고 해도 태울 수 없으므로 넘김.
+        					  if(person[i].Emergency!=Emergency)
+        						  continue;
+        				  }
+        				  
+        				 if(this.personNum<6)//만원 수 
         				 {
         					 person[i].setElevatorNum(this.ElevatorNum);
         					 this.personNum++;
         					 person[i].setEntered(1);
+        					 frame.getPassengerIn(i, this.ElevatorNum,this.floor);
         					 this.addRequest(person[i].getDestination());
-        					 System.out.println(currentTime+" Person "+i+" entered in Elevator "+this.ElevatorNum+"("+this.personNum+")");
+        					 System.out.println(" Person "+i+" entered in Elevator "+this.ElevatorNum+"("+this.personNum+")");
         				 }
+        				//사람을 태우는 조건 : 그 사람이 현재보다 작은 시간에 왔고, 현재 타고 있거나 완료된 상태가 아닐경우에 태운다.
         				 else
         				 {
-        					 person[i].wait=1;
+        					 person[i].wait=1;//난 버튼을 눌렀지만... ㅇㅇ 만원이라 못타서 다시 기다려야 할 때는 새로운 엘리베이터를 할당받아야 하므로 wait을 1로 해줌.
         				 }
         		  }
         			  else if(person[i].getEntered()==1&&person[i].getDestination()==this.getFloor())
         			  {
+        				  // 사람을 내리게하는 조건 : 그 사람이 탄 엘레베이터랑 현재 엘베번호가 같고, 현재 타고 있는 상태! 완료된 상태면 내리지 않음.
         				  if(person[i].getElevatorNum()==this.ElevatorNum){
         					  person[i].setFinished(1);
         					  this.personNum--;
-        					  System.out.println(currentTime+" Person "+i+" has left on Elevator "+this.ElevatorNum +" in Floor "+this.getFloor()+"("+this.personNum+")");
+        					  frame.getPassengerOut(i, this.ElevatorNum,this.floor);
+        					  System.out.println(" Person "+i+" has left on Elevator "+this.ElevatorNum +" in Floor "+this.getFloor()+"("+this.personNum+")");
         					 }
         				  if(personNum==0&&this.getRequests().isEmpty())
-        				  {
+        				  {//전체 다 일이 비워졌을 경우 둘다 idle로 바꿔주고
         					  this.setDirection(Direction.IDLE);
         					  this.setFirstDirection(Direction.IDLE);
-        					  if(this.isEmergency())
-        						  this.setIdle();
+        					  if(this.isEmergency())//emergency도 일이 완료되면
+        						  this.setIdle();//emergency 상태를 idle로 고쳐준다.
         				  }
         			  }
         			  }
         		  }
         	  }
           if(this.getRequests().isEmpty())
-          {
+          {//이 부분이 중복되는 코드인데 오류때문에 넣었던 걸로 기억한다. 정확하게 기억이 나지 않는다.
         	  this.setDirection(Direction.IDLE);
 			  this.setFirstDirection(Direction.IDLE);
 			  if(this.isEmergency())
@@ -131,15 +141,16 @@ public class Elevator {
         	  
        }
        
-       //SETTERS
+       
        public void setDirection(Direction direction){
           this.direction = direction;
+          
        }
        public void setFirstDirection(Direction direction){
            this.firstDirection = direction;
         }
       
-       //GETTERS
+       
        public boolean isIdle(){
               return direction == Direction.IDLE;
        }
@@ -151,7 +162,7 @@ public class Elevator {
        }
        public void setIdle(){
     	  this.Emergency = Direction.IDLE;
-       }//응급상황끝나면 다시 평소 상태로 정해주는 거얌!
+       }//응급상황끝나면 다시 평소 상태로 정해주는 코드.
        public int getFloor(){
               return floor;
        }
@@ -173,10 +184,10 @@ public class Elevator {
            return firstDirection;
         }
        
-       //toString
+       
        public String toString(){
           return "\nElevator "+this.ElevatorNum+"\nEwaitTime : "+this.EwaitTime+"\nPerson NUM : "+this.personNum+"\nDirection: " + direction+"\nEmergency: " + Emergency + "\nFloor: " + floor + "\nRequested floors: " + requests;
-       }
+       }//엘리베이터의 현재 상태를 알려주는 코드.
 
 
 }

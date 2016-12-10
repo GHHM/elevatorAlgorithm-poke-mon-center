@@ -7,15 +7,15 @@ public class Main {
 
 	public static void main(String[] args) throws Exception {
 		Control newC = new Control();
-		PersonInfo[] person = new PersonInfo[21];
+		PersonInfo[] person = new PersonInfo[20];
 
 		int source = 0, dest = 0;
-		int currentTime = 0, totalTime = 50;
+		int currentTime = 0, totalTime = 10;
 		person[0] = new PersonInfo(0, 0, 0);
 
 		frame f = new frame();
 
-		for (int i = 1; i < person.length; i++) {
+		for (int i = 0; i < person.length; i++) {
 			source = (int) (Math.random() * 5) + 1;
 			dest = (int) (Math.random() * 5) + 1;
 			if (source == dest && source <= 3)
@@ -24,47 +24,32 @@ public class Main {
 				dest -= 1;
 			person[i] = new PersonInfo(source, dest, i);
 			person[i].time = (int) (Math.random() * (totalTime * 0.7));
-			if (i % 500 == 0 && i != 0)
+			if (i % 19 == 0 && i != 0)
 				person[i].Emergency = Direction.EMERGENCY;
-		}
-		int a = 0;
-		while (currentTime != totalTime) {
+		}//랜덤으로 타는 층 내릴 층 응급...상황은 랜덤이 아니지만... ㅇㅇ 정해주는 코드!
+
+		while (currentTime != totalTime) {//현재 시간이 전체시간과 같지 않을 때 까지 돌림
 			if (currentTime >= (totalTime / 24) * 8 && currentTime < (totalTime / 24) * 11)
-				frame.startOfficeGoing();
+				frame.startOfficeGoing();// 이때는 출근시간이니까 출근시간이라고 해주고!
 			else if (currentTime >= (totalTime / 24) * 16 && currentTime < (totalTime / 24) * 20)
-				frame.startQuittingTime();
+				frame.startQuittingTime();// 이때는 퇴근시간이니까 퇴근시간이라고 해주고!
 			else if (currentTime < (totalTime / 24) * 8 || currentTime >= (totalTime / 24) * 11)
-				frame.endOfficeGoing();
+				frame.endOfficeGoing();//이땐 출근시간이 아니야
 			else if (currentTime < (totalTime / 24) * 16 || currentTime >= (totalTime / 24) * 20)
-				frame.endQuittingTime();
+				frame.endQuittingTime();//퇴근시간이 아니야!
 			// 출퇴근 아이콘 바꾸기!
 
-			System.out.println("현재 시간 : " + currentTime);// 현재시간 체크용 없앨거임!
-															// 나중에... 언젠가???
-															// 내코드는 언제 깔끔해질까...
-			for (int j = 1; j < person.length; j++) {
-				if (person[j].time <= currentTime && person[j].getEntered() != 1) {// 뒤에서
-																					// 문
-																					// 열렸다
-																					// 닫혔다
-																					// 할
-																					// 때
-																					// 3초
-																					// 더해서
-																					// 미리
-																					// 넣어주는게
-																					// 있어서
-																					// 그것
-																					// 때문에
-																					// 추가!
-					if (person[j].wait == 1) {
+			System.out.println("현재 시간 : " + currentTime);// 현재시간 체크용! 언..언젠가 없앨거야!
+														
+			for (int j = 0; j < person.length; j++) {//사람의 숫자 만큼 계속 for문을 돌림
+				if (person[j].time <= currentTime && person[j].getEntered() != 1) {
+					if (person[j].wait == 1) {//wait이 1이면 그 사람은 엘베를 기다리고 있는 사람임 
 						System.out.println("Person " + person[j].getPersonNum() + " (" + person[j].getSource() + " , "
-								+ person[j].getDestination() + " )");
+								+ person[j].getDestination() + " )");// 이 사람의 목적지와 탈 층을 출력해줌
 						if (person[j].getSource() - person[j].getDestination() < 0) {
-							if (newC.pressButton(person[j].getSource(), Direction.UP, person[j].Emergency) == 1) {
+							if (newC.pressButton(person[j].getSource(), Direction.UP, person[j].Emergency) == 1) {//pressButton의 return 값이 1이여야만 엘베 버튼을 누를 수 있음.
 								person[j].wait = 0;
 								person[j].direction = Direction.UP;
-								// System.out.println(j+" 가 request 받");
 							} else if (newC.pressButton(person[j].getSource(), Direction.UP,
 									person[j].Emergency) == 2) {
 								person[j].direction = Direction.UP;
@@ -74,9 +59,8 @@ public class Main {
 							if (newC.pressButton(person[j].getSource(), Direction.DOWN, person[j].Emergency) == 1) {
 								person[j].wait = 0;
 								person[j].direction = Direction.DOWN;
-								// System.out.println(j+" 가 request 받");
 							} else if (newC.pressButton(person[j].getSource(), Direction.UP,
-									person[j].Emergency) == 2) {
+									person[j].Emergency) == 2) {// return 값이 2이면 emergency 상황이라는 것이고 이걸 처리하려면 다른 함수안으로 들어가야 함.
 								person[j].direction = Direction.DOWN;
 								newC.EmergencyHandling(person, j);
 							}
@@ -91,15 +75,7 @@ public class Main {
 			}
 			currentTime++;
 
-			int c = 0;
-			for (int i = 1; i < person.length; i++) {
-				if (i == 1)
-					c = 0;
-				if (person[i].getFinished() == 1)
-					c++;
-			}
-			if ((c + 1) == person.length)
-				break;
+
 		}
 		frame.endQuittingTime();
 		System.out.println("Time out");
