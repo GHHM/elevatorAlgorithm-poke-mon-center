@@ -70,7 +70,7 @@ public class Main {
 			}
 			if (currentTime > 1) {
 				if (newC.elevator1.getRequests().isEmpty() || !newC.elevator2.getRequests().isEmpty()
-						|| !newC.elevator3.getRequests().isEmpty())
+						|| !newC.elevator3.getRequests().isEmpty())//아 리퀘스트가 없다면 굳이 엘베는 안움직임
 					newC.go(person, currentTime, totalTime);
 			}
 			currentTime++;
