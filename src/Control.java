@@ -201,8 +201,16 @@ public class Control {
 	    		  {
 	    			  if(closestElevator.getRequests().contains(person[i].getDestination()))
 	    			  {
-	    				//이때 나가는 사람은 다시 기다려야 되니까 움직이는 방향을 오른쪽으로! 여기다 오른쪽으로 가게하는 함수 추가하면 될 것 같아요!
+	    				  System.out.println("Person "+i+"  Dest: "+person[i].getDestination()+" is lefted because of Emergency situation.");
+	    				  frame.MovePassengerToWait(i, closestElevator.getFloor());
 	    				  //여기는 엘베 안에 탄 사람들을 handle해주는 과정입니다!
+	    				  
+	    				  if(person[i].getDestination()==closestElevator.getFloor())
+	    				  {
+	    					  person[i].setFinished(1);//목적지에 왔는데 중간에 emergency걸려서 4층에서 4층 가고 싶던 친구가 있어서 넣은 코드
+	    					  closestElevator.personNum--;
+	    					  continue;
+	    				  }
 	    				  person[i].setEntered(0);
 	    				  closestElevator.personNum--;
 	    				  person[i].wait=1;

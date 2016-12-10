@@ -261,7 +261,7 @@ public class frame extends JFrame {
 			moveLocationTo = e3Location;
 		contentPane.add(pocketMonImage[passengerNum]);
 		pocketMonImage[passengerNum].setVisible(true);
-		for (int j = 1500; pocketMonImage[passengerNum].getX()!= moveLocationTo-1; j--) {
+		while( pocketMonImage[passengerNum].getX()!= moveLocationTo-1) {
 			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() - 1, floorLocation, 120, 120);
 			try {
 				Thread.sleep(3);
@@ -298,6 +298,24 @@ public class frame extends JFrame {
 		pocketMonImage[passengerNum].setVisible(false);
 	}
 
+	public static void MovePassengerToWait (int passengerNum, int currentFloor) {// 1920ÀÌ·Á³ª
+		
+		int floorLocation = 80 + ((5-currentFloor) * 180);
+		contentPane.add(pocketMonImage[passengerNum]);
+		pocketMonImage[passengerNum].setVisible(true);
+		
+		while(pocketMonImage[passengerNum].getX()!= 1500) {
+			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() +1, floorLocation, 120, 120);
+			try {
+				Thread.sleep(3);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		pocketMonImage[passengerNum].setVisible(false);
+	}
+	
 	public static void startOfficeGoing()
 	{
 		sun_b.setVisible(false);

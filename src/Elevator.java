@@ -101,9 +101,9 @@ public class Elevator {
         					 person[i].setElevatorNum(this.ElevatorNum);
         					 this.personNum++;
         					 person[i].setEntered(1);
-        					 frame.getPassengerIn(i, this.ElevatorNum,this.floor);
         					 this.addRequest(person[i].getDestination());
         					 System.out.println(" Person "+i+" entered in Elevator "+this.ElevatorNum+"("+this.personNum+")");
+        					 frame.getPassengerIn(i, this.ElevatorNum,this.floor);
         				 }
         				//사람을 태우는 조건 : 그 사람이 현재보다 작은 시간에 왔고, 현재 타고 있거나 완료된 상태가 아닐경우에 태운다.
         				 else
@@ -117,9 +117,9 @@ public class Elevator {
         				  if(person[i].getElevatorNum()==this.ElevatorNum){
         					  person[i].setFinished(1);
         					  this.personNum--;
-        					  frame.getPassengerOut(i, this.ElevatorNum,this.floor);
         					  System.out.println(" Person "+i+" has left on Elevator "+this.ElevatorNum +" in Floor "+this.getFloor()+"("+this.personNum+")");
-        					 }
+        					  frame.getPassengerOut(i, this.ElevatorNum,this.floor); 
+        				  }
         				  if(personNum==0&&this.getRequests().isEmpty())
         				  {//전체 다 일이 비워졌을 경우 둘다 idle로 바꿔주고
         					  this.setDirection(Direction.IDLE);

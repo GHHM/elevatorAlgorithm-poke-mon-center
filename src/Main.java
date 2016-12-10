@@ -10,7 +10,7 @@ public class Main {
 		PersonInfo[] person = new PersonInfo[20];
 
 		int source = 0, dest = 0;
-		int currentTime = 0, totalTime = 10;
+		int currentTime = 0, totalTime = 20;
 		person[0] = new PersonInfo(0, 0, 0);
 
 		frame f = new frame();
