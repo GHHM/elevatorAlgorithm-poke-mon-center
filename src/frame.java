@@ -1,4 +1,7 @@
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -10,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.LineBorder;
 
 public class frame extends JFrame {
 
@@ -23,6 +27,14 @@ public class frame extends JFrame {
 	static JPanel sun_b;
 	static JPanel moon;
 	static JPanel sun;
+	static JPanel[] emergency = new JPanel[3];
+	static JPanel[] idle = new JPanel[3];
+	static JPanel[] up = new JPanel[3];
+	static JPanel[] down = new JPanel[3];
+	static JPanel e1_state = new JPanel();
+	static JPanel e2_state = new JPanel();
+	static JPanel e3_state = new JPanel();
+	static JLabel time_state = new JLabel("normal", JLabel.CENTER);
 	static JPanel[] pocketMonImage = new JPanel[20];// 인원수 바꿀 때 여기 바꿔여
 
 	static int e1Location = 273;
@@ -161,6 +173,46 @@ public class frame extends JFrame {
 			}
 		};
 		
+		for(int i = 0;i<3;i++)
+		{
+			emergency[i] = new JPanel() {
+				public void paintComponent(Graphics g) {
+					setOpaque(false);
+					setSize(80,80);
+					Image backImg = new ImageIcon("emergency.png").getImage();
+					g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+				}
+			};
+			
+			idle[i] = new JPanel() {
+				public void paintComponent(Graphics g) {
+					setOpaque(false);
+					setSize(80,80);
+					Image backImg = new ImageIcon("idle.png").getImage();
+					g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+				}
+			};
+			
+			up[i] = new JPanel() {
+				public void paintComponent(Graphics g) {
+					setOpaque(false);
+					setSize(80,80);
+					Image backImg = new ImageIcon("up.png").getImage();
+					g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+				}
+			};
+			
+			down[i] = new JPanel() {
+				public void paintComponent(Graphics g) {
+					setOpaque(false);
+					setSize(80,80);
+					Image backImg = new ImageIcon("down.png").getImage();
+					g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+				}
+			};
+		}
+		
+		
 		moon.setSize(10, 120);
 		moon.setLayout(null);
 		moon.setBounds(1754, 324, 115, 110);
@@ -181,10 +233,69 @@ public class frame extends JFrame {
 		sun_b.setBounds(1614, 319, 115, 110);
 		sun_b.setVisible(true);
 		
+		e1_state.setBounds(1697, 551, 115, 110);//e1 상태표시 위치
+		e2_state.setBounds(1697, 670, 115, 110);//e2 상태표시 위치
+		e3_state.setBounds(1697, 790, 115, 110);//e3 상태표시 위치
+		
+		
+		for(int i = 0;i<3;i++)
+		{
+			emergency[i].setSize(10, 120);
+			emergency[i].setLayout(null);
+			emergency[i].setVisible(false);
+			
+			idle[i].setSize(10, 120);
+			idle[i].setLayout(null);
+			idle[i].setVisible(true);
+			
+			up[i].setSize(10, 120);
+			up[i].setLayout(null);
+			up[i].setVisible(false);
+			
+			down[i].setSize(10, 120);
+			down[i].setLayout(null);
+			down[i].setVisible(false);
+			
+			if(i==0)
+			{
+				emergency[i].setBounds(e1_state.getBounds());
+				idle[i].setBounds(e1_state.getBounds());
+				up[i].setBounds(e1_state.getBounds());
+				down[i].setBounds(e1_state.getBounds());
+			}
+			else if(i==1)
+			{
+				emergency[i].setBounds(e2_state.getBounds());
+				idle[i].setBounds(e2_state.getBounds());
+				up[i].setBounds(e2_state.getBounds());
+				down[i].setBounds(e2_state.getBounds());
+			}
+			else
+			{
+				emergency[i].setBounds(e3_state.getBounds());
+				idle[i].setBounds(e3_state.getBounds());
+				up[i].setBounds(e3_state.getBounds());
+				down[i].setBounds(e3_state.getBounds());
+			}
+			
+			contentPane.add(emergency[i]);
+			contentPane.add(idle[i]);
+			contentPane.add(up[i]);
+			contentPane.add(down[i]);
+		}
+		
+		
 		contentPane.add(moon_b);
 		contentPane.add(sun_b);
 		contentPane.add(moon);
 		contentPane.add(sun);
+		
+		time_state.setLayout(null);
+		time_state.setFont(new Font("Octapost NBP",1,50));
+		time_state.setBounds(1560, 210, 330, 83);
+		time_state.setVisible(true);
+		
+		contentPane.add(time_state);
 		
 		init();
 	}
@@ -340,4 +451,40 @@ public class frame extends JFrame {
 		moon_b.setVisible(true);
 	}
 	
+	public static void resetState(int eNum)
+	{
+		emergency[eNum].setVisible(false);
+		idle[eNum].setVisible(false);
+		up[eNum].setVisible(false);
+		down[eNum].setVisible(false);
+	}
+	
+	public static void setEmergency(int eNum)
+	{
+		resetState(eNum-1);
+		emergency[eNum-1].setVisible(true);
+	}
+	
+	public static void setIdle(int eNum)
+	{
+		resetState(eNum-1);
+		idle[eNum-1].setVisible(true);
+	}
+	
+	public static void setUp(int eNum)
+	{
+		resetState(eNum-1);
+		up[eNum-1].setVisible(true);
+	}
+	
+	public static void setDown(int eNum)
+	{
+		resetState(eNum-1);
+		down[eNum-1].setVisible(true);
+	}
+	
+	public static void setStateText(String str)
+	{
+		time_state.setText(str);
+	}
 }

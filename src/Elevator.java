@@ -144,7 +144,12 @@ public class Elevator {
        
        public void setDirection(Direction direction){
           this.direction = direction;
-          
+          if(direction == Direction.UP)
+        	  frame.setUp(ElevatorNum);
+          else if(direction == Direction.DOWN)
+        	  frame.setDown(ElevatorNum);
+          else
+        	  frame.setIdle(ElevatorNum);
        }
        public void setFirstDirection(Direction direction){
            this.firstDirection = direction;
@@ -159,9 +164,11 @@ public class Elevator {
        }
        public void setEmergency(){
           this.Emergency = Direction.EMERGENCY;
+          frame.setEmergency(ElevatorNum);
        }
        public void setIdle(){
     	  this.Emergency = Direction.IDLE;
+    	  frame.setIdle(ElevatorNum);
        }//응급상황끝나면 다시 평소 상태로 정해주는 코드.
        public int getFloor(){
               return floor;

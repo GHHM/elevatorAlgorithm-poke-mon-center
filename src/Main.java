@@ -10,7 +10,7 @@ public class Main {
 		PersonInfo[] person = new PersonInfo[20];
 
 		int source = 0, dest = 0;
-		int currentTime = 0, totalTime = 20;
+		int currentTime = 0, totalTime = 30;
 		person[0] = new PersonInfo(0, 0, 0);
 
 		frame f = new frame();
@@ -29,14 +29,28 @@ public class Main {
 		}//랜덤으로 타는 층 내릴 층 응급...상황은 랜덤이 아니지만... ㅇㅇ 정해주는 코드!
 
 		while (currentTime != totalTime) {//현재 시간이 전체시간과 같지 않을 때 까지 돌림
-			if (currentTime >= (totalTime / 24) * 8 && currentTime < (totalTime / 24) * 11)
+			if (currentTime >= (totalTime/24)*8 && currentTime < (totalTime/24)*11)
+			{
 				frame.startOfficeGoing();// 이때는 출근시간이니까 출근시간이라고 해주고!
-			else if (currentTime >= (totalTime / 24) * 16 && currentTime < (totalTime / 24) * 20)
+				frame.setStateText("commute");
+			}
+			if (currentTime >= (totalTime/24)*16 && currentTime< (totalTime/24)*20)
+			{
 				frame.startQuittingTime();// 이때는 퇴근시간이니까 퇴근시간이라고 해주고!
-			else if (currentTime < (totalTime / 24) * 8 || currentTime >= (totalTime / 24) * 11)
+				frame.setStateText("commute");
+			}
+			if (currentTime < (totalTime / 24) * 8 || currentTime >= (totalTime / 24) * 11)
+			{
 				frame.endOfficeGoing();//이땐 출근시간이 아니야
-			else if (currentTime < (totalTime / 24) * 16 || currentTime >= (totalTime / 24) * 20)
+			}
+			if (currentTime < (totalTime / 24) * 16 || currentTime >= (totalTime / 24) * 20)
+			{
 				frame.endQuittingTime();//퇴근시간이 아니야!
+			}
+			if((currentTime < (totalTime / 24) * 8 || currentTime >= (totalTime / 24) * 11)&&(currentTime < (totalTime / 24) * 16 || currentTime >= (totalTime / 24) * 20))
+			{
+				frame.setStateText("normal");
+			}
 			// 출퇴근 아이콘 바꾸기!
 
 			System.out.println("현재 시간 : " + currentTime);// 현재시간 체크용! 언..언젠가 없앨거야!
@@ -78,6 +92,8 @@ public class Main {
 
 		}
 		frame.endQuittingTime();
+		frame.setStateText("end");
+		
 		System.out.println("Time out");
 		int num = 0;// 완료된 사람 숫자 세려고
 		for (int i = 0; i < person.length; i++) {
