@@ -10,7 +10,7 @@ public class Main {
 		PersonInfo[] person = new PersonInfo[20];
 
 		int source = 0, dest = 0;
-		int currentTime = 0, totalTime = 30;
+		int currentTime=0, totalTime = 20;
 		person[0] = new PersonInfo(0, 0, 0);
 
 		frame f = new frame();
@@ -29,6 +29,7 @@ public class Main {
 		}//랜덤으로 타는 층 내릴 층 응급...상황은 랜덤이 아니지만... ㅇㅇ 정해주는 코드!
 
 		while (currentTime != totalTime) {//현재 시간이 전체시간과 같지 않을 때 까지 돌림
+			frame.timeDisplay(currentTime);
 			if (currentTime >= (totalTime/24)*8 && currentTime < (totalTime/24)*11)
 			{
 				frame.startOfficeGoing();// 이때는 출근시간이니까 출근시간이라고 해주고!
@@ -52,7 +53,7 @@ public class Main {
 				frame.setStateText("normal");
 			}
 			// 출퇴근 아이콘 바꾸기!
-
+			
 			System.out.println("현재 시간 : " + currentTime);// 현재시간 체크용! 언..언젠가 없앨거야!
 														
 			for (int j = 0; j < person.length; j++) {//사람의 숫자 만큼 계속 for문을 돌림

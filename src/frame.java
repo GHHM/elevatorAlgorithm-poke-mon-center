@@ -1,7 +1,6 @@
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
 import java.awt.Image;
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -13,12 +12,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
 
 public class frame extends JFrame {
 
 	ImageIcon icon;
-	static Image[] backImg= new Image[9];
+	static Image[] backImg = new Image[9];
 	static JPanel contentPane;
 	static JPanel mb1;
 	static JPanel mb2;
@@ -27,6 +25,9 @@ public class frame extends JFrame {
 	static JPanel sun_b;
 	static JPanel moon;
 	static JPanel sun;
+	static JPanel[] pocketMonImage = new JPanel[20];// 인원수 바꿀 때 여기 바꿔여
+	static JLabel time_state = new JLabel("normal", JLabel.CENTER);
+	static JLabel timer = new JLabel();
 	static JPanel[] emergency = new JPanel[3];
 	static JPanel[] idle = new JPanel[3];
 	static JPanel[] up = new JPanel[3];
@@ -34,13 +35,10 @@ public class frame extends JFrame {
 	static JPanel e1_state = new JPanel();
 	static JPanel e2_state = new JPanel();
 	static JPanel e3_state = new JPanel();
-	static JLabel time_state = new JLabel("normal", JLabel.CENTER);
-	static JPanel[] pocketMonImage = new JPanel[20];// 인원수 바꿀 때 여기 바꿔여
-
 	static int e1Location = 273;
 	static int e2Location = 619;
 	static int e3Location = 980;
-	static int time=0;
+	static int time = 0;
 
 	frame() {
 		setTitle("Pocketmon Center");
@@ -62,58 +60,70 @@ public class frame extends JFrame {
 		setSize(1920, 1080);
 		setResizable(false);
 		setVisible(true);
-
-		//이제 한 사람당 한 패널의 포켓몬...? 할당하려고요! 기다려어어어어어엉
-		//모든 포켓몬==뚜벅초......ㅠ 흡
-				for(int i=0;i<20;i++)
-				{
-					time = i;
-					pocketMonImage[i] = new JPanel() {
-						public void paintComponent(Graphics g) {
-							setOpaque(false);
-							if(time%9==0)
-						         backImg[0] = new ImageIcon("가디안.png").getImage();
-						      else if(time%9==1)
-						         backImg[1] = new ImageIcon("뚜벅초.png").getImage();
-						      else if(time%9==2)
-						         backImg[2] = new ImageIcon("메로에타.png").getImage();
-						      else if(time%9==3)
-						         backImg[3] = new ImageIcon("뮤.png").getImage();
-						      else if(time%9==4)
-						         backImg[4] = new ImageIcon("알로라.png").getImage();
-						      else if(time%9==5)
-						         backImg[5] = new ImageIcon("쥬피썬더.png").getImage();
-						      else if(time%9==6)
-						         backImg[6] = new ImageIcon("파이리.png").getImage();
-						      else if(time%9==7)
-						         backImg[7] = new ImageIcon("푸린.png").getImage();
-						      else
-						         backImg[8] = new ImageIcon("피츄.png").getImage();
-							
-							g.drawImage(backImg[time%9], 0, 0, getWidth(), getHeight(), this);
-						}
-					};
-					pocketMonImage[i].setSize(120, 120);
-					pocketMonImage[i].setLayout(null);
-					pocketMonImage[i].setBounds(1500, 80, 120, 120);
-					pocketMonImage[i].setVisible(true);
-				}
 		
-		mb1 = new JPanel() {//엘리베이터 1
+		/*timer*/
+		timer.setSize(200,100);
+		timer.setLayout(null);
+		timer.setBounds(1630, 55, 200, 110);
+		timer.setFont(new Font("hp-transistor",Font.ITALIC,120));
+		timer.setOpaque(true);	//글자색변경을 위해서는 true 해줘야함
+		timer.setBackground(Color.WHITE);
+		timer.setForeground(new Color(16,9,100));
+		timer.setVisible(true);
+		contentPane.add(timer);
+		
+		
+
+		// 이제 한 사람당 한 패널의 포켓몬...? 할당하려고요! 기다려어어어어어엉
+		// 모든 포켓몬==뚜벅초......ㅠ 흡
+		for (int i = 0; i < 20; i++) {
+			time = i;
+			pocketMonImage[i] = new JPanel() {
+				public void paintComponent(Graphics g) {
+					setOpaque(false);
+					if (time % 9 == 0)
+						backImg[0] = new ImageIcon("가디안.png").getImage();
+					else if (time % 9 == 1)
+						backImg[1] = new ImageIcon("뚜벅초.png").getImage();
+					else if (time % 9 == 2)
+						backImg[2] = new ImageIcon("메로에타.png").getImage();
+					else if (time % 9 == 3)
+						backImg[3] = new ImageIcon("뮤.png").getImage();
+					else if (time % 9 == 4)
+						backImg[4] = new ImageIcon("알로라.png").getImage();
+					else if (time % 9 == 5)
+						backImg[5] = new ImageIcon("쥬피썬더.png").getImage();
+					else if (time % 9 == 6)
+						backImg[6] = new ImageIcon("파이리.png").getImage();
+					else if (time % 9 == 7)
+						backImg[7] = new ImageIcon("푸린.png").getImage();
+					else
+						backImg[8] = new ImageIcon("피츄.png").getImage();
+
+					g.drawImage(backImg[time % 9], 0, 0, getWidth(), getHeight(), this);
+				}
+			};
+			pocketMonImage[i].setSize(120, 120);
+			pocketMonImage[i].setLayout(null);
+			pocketMonImage[i].setBounds(1500, 80, 120, 120);
+			pocketMonImage[i].setVisible(true);
+		}
+
+		mb1 = new JPanel() {// 엘리베이터 1
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-		mb2 = new JPanel() {//엘리베이터 2
+		mb2 = new JPanel() {// 엘리베이터 2
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-		mb3 = new JPanel() {//엘리베이터 3
+		mb3 = new JPanel() {// 엘리베이터 3
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
@@ -143,7 +153,7 @@ public class frame extends JFrame {
 		moon_b = new JPanel() {
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
-				setSize(70,70);
+				setSize(70, 70);
 				Image backImg = new ImageIcon("moon_b.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
@@ -151,7 +161,7 @@ public class frame extends JFrame {
 		sun_b = new JPanel() {
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
-				setSize(80,80);
+				setSize(80, 80);
 				Image backImg = new ImageIcon("sun_b.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
@@ -159,7 +169,7 @@ public class frame extends JFrame {
 		moon = new JPanel() {
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
-				setSize(70,70);
+				setSize(70, 70);
 				Image backImg = new ImageIcon("moon.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
@@ -167,12 +177,37 @@ public class frame extends JFrame {
 		sun = new JPanel() {
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
-				setSize(80,80);
+				setSize(80, 80);
 				Image backImg = new ImageIcon("sun.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-		
+
+		moon.setSize(10, 120);
+		moon.setLayout(null);
+		moon.setBounds(1754, 324, 115, 110);
+		moon.setVisible(false);
+
+		sun.setSize(10, 120);
+		sun.setLayout(null);
+		sun.setBounds(1614, 319, 115, 110);
+		sun.setVisible(false);
+
+		moon_b.setSize(10, 120);
+		moon_b.setLayout(null);
+		moon_b.setBounds(1754, 324, 115, 110);
+		moon_b.setVisible(true);
+
+		sun_b.setSize(10, 120);
+		sun_b.setLayout(null);
+		sun_b.setBounds(1614, 319, 115, 110);
+		sun_b.setVisible(true);
+
+		contentPane.add(moon_b);
+		contentPane.add(sun_b);
+		contentPane.add(moon);
+		contentPane.add(sun);
+
 		for(int i = 0;i<3;i++)
 		{
 			emergency[i] = new JPanel() {
@@ -211,27 +246,6 @@ public class frame extends JFrame {
 				}
 			};
 		}
-		
-		
-		moon.setSize(10, 120);
-		moon.setLayout(null);
-		moon.setBounds(1754, 324, 115, 110);
-		moon.setVisible(false);
-		
-		sun.setSize(10, 120);
-		sun.setLayout(null);
-		sun.setBounds(1614, 319, 115, 110);
-		sun.setVisible(false);
-		
-		moon_b.setSize(10, 120);
-		moon_b.setLayout(null);
-		moon_b.setBounds(1754, 324, 115, 110);
-		moon_b.setVisible(true);
-		
-		sun_b.setSize(10, 120);
-		sun_b.setLayout(null);
-		sun_b.setBounds(1614, 319, 115, 110);
-		sun_b.setVisible(true);
 		
 		e1_state.setBounds(1697, 551, 115, 110);//e1 상태표시 위치
 		e2_state.setBounds(1697, 670, 115, 110);//e2 상태표시 위치
@@ -284,12 +298,6 @@ public class frame extends JFrame {
 			contentPane.add(down[i]);
 		}
 		
-		
-		contentPane.add(moon_b);
-		contentPane.add(sun_b);
-		contentPane.add(moon);
-		contentPane.add(sun);
-		
 		time_state.setLayout(null);
 		time_state.setFont(new Font("Octapost NBP",1,50));
 		time_state.setBounds(1560, 210, 330, 83);
@@ -303,7 +311,7 @@ public class frame extends JFrame {
 	public void init() {
 		Sound("pocketmon.wav", true);
 	}
-	
+
 	public void Sound(String file, boolean Loop) {
 		Clip clip;
 		try {
@@ -322,7 +330,8 @@ public class frame extends JFrame {
 
 	private void makeUI() {
 
-	}//뭐 때문에 썼었는데 빈 함수가 되었을까...?
+	}// 뭐 때문에 썼었는데 빈 함수가 되었을까...? //프레임 constructor 안에 너무 많은 코드가 있어서 옮기려고
+		// 만들었었찌...
 
 	public static void moveElevatorUP(int i) {
 
@@ -363,7 +372,7 @@ public class frame extends JFrame {
 
 	public static void getPassengerIn(int passengerNum, int elevatorNum, int source) {// 1920이려나
 		int moveLocationTo = 0;
-		int floorLocation = 80 + ((5-source) * 180);
+		int floorLocation = 80 + ((5 - source) * 180);
 		if (elevatorNum == 1)
 			moveLocationTo = e1Location;
 		else if (elevatorNum == 2)
@@ -372,7 +381,7 @@ public class frame extends JFrame {
 			moveLocationTo = e3Location;
 		contentPane.add(pocketMonImage[passengerNum]);
 		pocketMonImage[passengerNum].setVisible(true);
-		while( pocketMonImage[passengerNum].getX()!= moveLocationTo-1) {
+		while (pocketMonImage[passengerNum].getX() != moveLocationTo - 1) {
 			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() - 1, floorLocation, 120, 120);
 			try {
 				Thread.sleep(3);
@@ -385,9 +394,9 @@ public class frame extends JFrame {
 	}
 
 	public static void getPassengerOut(int passengerNum, int elevatorNum, int destination) {
-		
+
 		int moveLocationTo = 0;
-		int floorLocation = 80 + ((5-destination) * 180);
+		int floorLocation = 80 + ((5 - destination) * 180);
 		if (elevatorNum == 1)
 			moveLocationTo = e1Location;
 		else if (elevatorNum == 2)
@@ -396,9 +405,9 @@ public class frame extends JFrame {
 			moveLocationTo = e3Location;
 		pocketMonImage[passengerNum].setVisible(true);
 		contentPane.add(pocketMonImage[passengerNum]);
-		pocketMonImage[passengerNum].setBounds( moveLocationTo, floorLocation, 120, 120);
-		for (int j = moveLocationTo; j >0; j--) {
-			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX()-1 , floorLocation, 120, 120);
+		pocketMonImage[passengerNum].setBounds(moveLocationTo, floorLocation, 120, 120);
+		for (int j = moveLocationTo; j > 0; j--) {
+			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() - 1, floorLocation, 120, 120);
 			try {
 				Thread.sleep(4);
 			} catch (InterruptedException e) {
@@ -409,14 +418,14 @@ public class frame extends JFrame {
 		pocketMonImage[passengerNum].setVisible(false);
 	}
 
-	public static void MovePassengerToWait (int passengerNum, int currentFloor) {// 1920이려나
-		
-		int floorLocation = 80 + ((5-currentFloor) * 180);
+	public static void MovePassengerToWait(int passengerNum, int currentFloor) {// 1920이려나
+
+		int floorLocation = 80 + ((5 - currentFloor) * 180);
 		contentPane.add(pocketMonImage[passengerNum]);
 		pocketMonImage[passengerNum].setVisible(true);
-		
-		while(pocketMonImage[passengerNum].getX()!= 1500) {
-			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() +1, floorLocation, 120, 120);
+
+		while (pocketMonImage[passengerNum].getX() != 1500) {
+			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() + 1, floorLocation, 120, 120);
 			try {
 				Thread.sleep(3);
 			} catch (InterruptedException e) {
@@ -426,31 +435,41 @@ public class frame extends JFrame {
 		}
 		pocketMonImage[passengerNum].setVisible(false);
 	}
-	
-	public static void startOfficeGoing()
-	{
+
+	public static void startOfficeGoing() {
 		sun_b.setVisible(false);
 		sun.setVisible(true);
 	}
-	
-	public static void endOfficeGoing()
-	{
+
+	public static void endOfficeGoing() {
 		sun.setVisible(false);
 		sun_b.setVisible(true);
 	}
-	
-	public static void startQuittingTime()
-	{
+
+	public static void startQuittingTime() {
 		moon_b.setVisible(false);
 		moon.setVisible(true);
 	}
-	
-	public static void endQuittingTime()
-	{
+
+	public static void endQuittingTime() {
 		moon.setVisible(false);
 		moon_b.setVisible(true);
 	}
-	
+
+	public static void timeDisplay(int currentTime) {
+
+		int h = currentTime / 60;
+		int m = currentTime % 60;
+		String timeLine;
+		timeLine = "";
+		timeLine += (h < 0) ? "0" + h : h;
+		timeLine += ":";
+		timeLine += (m < 10) ? "0" + m : m;
+		timer.setText(timeLine);
+
+	}
+
+
 	public static void resetState(int eNum)
 	{
 		emergency[eNum].setVisible(false);
@@ -487,4 +506,5 @@ public class frame extends JFrame {
 	{
 		time_state.setText(str);
 	}
+	
 }
