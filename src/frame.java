@@ -27,7 +27,7 @@ public class frame extends JFrame {
 	static JPanel sun;
 	static JPanel[] pocketMonImage = new JPanel[20];// 인원수 바꿀 때 여기 바꿔여
 	static JLabel time_state = new JLabel("normal", JLabel.CENTER);
-	static JLabel timer = new JLabel();
+	static JLabel timer = new JLabel("", JLabel.CENTER);
 	static JPanel[] emergency = new JPanel[3];
 	static JPanel[] idle = new JPanel[3];
 	static JPanel[] up = new JPanel[3];
@@ -62,10 +62,10 @@ public class frame extends JFrame {
 		setVisible(true);
 		
 		/*timer*/
-		timer.setSize(200,100);
+		timer.setSize(220,100);
 		timer.setLayout(null);
-		timer.setBounds(1630, 55, 200, 110);
-		timer.setFont(new Font("hp-transistor",Font.ITALIC,120));
+		timer.setBounds(1615, 40, 300, 110);
+		timer.setFont(new Font("hp-transistor",Font.BOLD,90));
 		timer.setOpaque(true);	//글자색변경을 위해서는 true 해줘야함
 		timer.setBackground(Color.WHITE);
 		timer.setForeground(new Color(16,9,100));
@@ -456,15 +456,16 @@ public class frame extends JFrame {
 		moon_b.setVisible(true);
 	}
 
-	public static void timeDisplay(int currentTime) {
+	public static void timeDisplay(double currentTime) {
 
-		int h = currentTime / 60;
-		int m = currentTime % 60;
+		double h = currentTime / 60;
+		double m = currentTime % 60;
+	
 		String timeLine;
 		timeLine = "";
-		timeLine += (h < 0) ? "0" + h : h;
+		timeLine += (h < 10) ? "0" + (int)h : (int)h;
 		timeLine += ":";
-		timeLine += (m < 10) ? "0" + m : m;
+		timeLine += (m < 10) ? "0" + (int)m : (int)m;
 		timer.setText(timeLine);
 
 	}

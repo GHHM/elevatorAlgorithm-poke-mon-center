@@ -10,7 +10,7 @@ public class Main {
 		PersonInfo[] person = new PersonInfo[20];
 
 		int source = 0, dest = 0;
-		int currentTime=0, totalTime = 20;
+		int currentTime=0, totalTime = 48;
 		person[0] = new PersonInfo(0, 0, 0);
 
 		frame f = new frame();
@@ -27,9 +27,14 @@ public class Main {
 			if (i % 19 == 0 && i != 0)
 				person[i].Emergency = Direction.EMERGENCY;
 		}//랜덤으로 타는 층 내릴 층 응급...상황은 랜덤이 아니지만... ㅇㅇ 정해주는 코드!
-
+		
+		double fraction = 24/(double)totalTime;	//0.5
+		double time = 0;
+		System.out.println("fraction : "+fraction);
 		while (currentTime != totalTime) {//현재 시간이 전체시간과 같지 않을 때 까지 돌림
-			frame.timeDisplay(currentTime);
+			time =time + fraction*60 ;
+			System.out.println("time: "+time);
+			frame.timeDisplay(time);
 			if (currentTime >= (totalTime/24)*8 && currentTime < (totalTime/24)*11)
 			{
 				frame.startOfficeGoing();// 이때는 출근시간이니까 출근시간이라고 해주고!
