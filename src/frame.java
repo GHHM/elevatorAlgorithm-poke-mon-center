@@ -64,8 +64,8 @@ public class frame extends JFrame {
 		/*timer*/
 		timer.setSize(220,100);
 		timer.setLayout(null);
-		timer.setBounds(1615, 40, 300, 110);
-		timer.setFont(new Font("hp-transistor",Font.BOLD,90));
+		timer.setBounds(1580, 50, 280, 110);
+		timer.setFont(new Font("hp-transistor",Font.BOLD,100));
 		timer.setOpaque(true);	//글자색변경을 위해서는 true 해줘야함
 		timer.setBackground(Color.WHITE);
 		timer.setForeground(new Color(16,9,100));
