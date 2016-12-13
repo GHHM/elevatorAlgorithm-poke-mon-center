@@ -1,3 +1,3 @@
 public enum Direction {
-	UP,DOWN,IDLE,EMERGENCY;
+	UP, DOWN, IDLE, EMERGENCY;
 }

@@ -15,7 +15,7 @@ import javax.swing.JPanel;
 
 public class frame extends JFrame {
 
-	ImageIcon icon;
+	static Clip clip;
 	static Image[] backImg = new Image[9];
 	static JPanel contentPane;
 	static JPanel mb1;
@@ -25,7 +25,6 @@ public class frame extends JFrame {
 	static JPanel sun_b;
 	static JPanel moon;
 	static JPanel sun;
-	static JPanel[] pocketMonImage = new JPanel[20];// 인원수 바꿀 때 여기 바꿔여
 	static JLabel time_state = new JLabel("normal", JLabel.CENTER);
 	static JLabel timer = new JLabel("", JLabel.CENTER);
 	static JPanel[] emergency = new JPanel[3];
@@ -35,10 +34,23 @@ public class frame extends JFrame {
 	static JPanel e1_state = new JPanel();
 	static JPanel e2_state = new JPanel();
 	static JPanel e3_state = new JPanel();
+	static JLabel[] FloorWaitingNum = new JLabel[6];
+
+	static JPanel[] pocketMonImage = new JPanel[Main.pNum];
+
 	static int e1Location = 273;
 	static int e2Location = 619;
 	static int e3Location = 980;
-	static int time = 0;
+	static int[] FloorLocation = { 0, 800, 620, 440, 260, 80 };
+	static int time1 = 0;// 그 횟수에 엘베에서 똭 하고 출발하게 세는 변수
+	static int time2 = 0;
+	static int time3 = 0;
+
+	static JPanel mb1_o;// 이거 추가함!
+	static JPanel mb2_o;// 이거 추가함!
+	static JPanel mb3_o;// 이거 추가함!
+
+	static JLabel[] e_people = new JLabel[3];
 
 	frame() {
 		setTitle("Pocketmon Center");
@@ -60,54 +72,17 @@ public class frame extends JFrame {
 		setSize(1920, 1080);
 		setResizable(false);
 		setVisible(true);
-		
-		/*timer*/
-		timer.setSize(220,100);
+
+		/* timer */
+		timer.setSize(220, 100);
 		timer.setLayout(null);
-		timer.setBounds(1580, 50, 280, 110);
-		timer.setFont(new Font("hp-transistor",Font.BOLD,100));
-		timer.setOpaque(true);	//글자색변경을 위해서는 true 해줘야함
-		timer.setBackground(Color.WHITE);
-		timer.setForeground(new Color(16,9,100));
+		timer.setBounds(1571, 52, 305, 100);
+		timer.setFont(new Font("hp-transistor", Font.BOLD, 100));
+		timer.setOpaque(false); // 글자색변경을 위해서는 true 해줘야함 // 이거 false로 해도 잘 됨!
+		// timer.setBackground(Color.WHITE); // 이것도 굳이 안해줘도 됨!
+		timer.setForeground(new Color(16, 9, 100));
 		timer.setVisible(true);
 		contentPane.add(timer);
-		
-		
-
-		// 이제 한 사람당 한 패널의 포켓몬...? 할당하려고요! 기다려어어어어어엉
-		// 모든 포켓몬==뚜벅초......ㅠ 흡
-		for (int i = 0; i < 20; i++) {
-			time = i;
-			pocketMonImage[i] = new JPanel() {
-				public void paintComponent(Graphics g) {
-					setOpaque(false);
-					if (time % 9 == 0)
-						backImg[0] = new ImageIcon("가디안.png").getImage();
-					else if (time % 9 == 1)
-						backImg[1] = new ImageIcon("뚜벅초.png").getImage();
-					else if (time % 9 == 2)
-						backImg[2] = new ImageIcon("메로에타.png").getImage();
-					else if (time % 9 == 3)
-						backImg[3] = new ImageIcon("뮤.png").getImage();
-					else if (time % 9 == 4)
-						backImg[4] = new ImageIcon("알로라.png").getImage();
-					else if (time % 9 == 5)
-						backImg[5] = new ImageIcon("쥬피썬더.png").getImage();
-					else if (time % 9 == 6)
-						backImg[6] = new ImageIcon("파이리.png").getImage();
-					else if (time % 9 == 7)
-						backImg[7] = new ImageIcon("푸린.png").getImage();
-					else
-						backImg[8] = new ImageIcon("피츄.png").getImage();
-
-					g.drawImage(backImg[time % 9], 0, 0, getWidth(), getHeight(), this);
-				}
-			};
-			pocketMonImage[i].setSize(120, 120);
-			pocketMonImage[i].setLayout(null);
-			pocketMonImage[i].setBounds(1500, 80, 120, 120);
-			pocketMonImage[i].setVisible(true);
-		}
 
 		mb1 = new JPanel() {// 엘리베이터 1
 			public void paintComponent(Graphics g) {
@@ -130,7 +105,6 @@ public class frame extends JFrame {
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-
 		mb1.setSize(120, 120);
 		mb1.setLayout(null);
 		mb1.setBounds(273, 800, 115, 110);
@@ -149,6 +123,119 @@ public class frame extends JFrame {
 		contentPane.add(mb1);
 		contentPane.add(mb2);
 		contentPane.add(mb3);
+
+		// 이제 한 사람당 한 패널의 포켓몬...? 할당하려고요! 기다려어어어어어엉
+		// 모든 포켓몬==뚜벅초......ㅠ 흡
+		backImg[0] = new ImageIcon("가디안.png").getImage();
+		backImg[1] = new ImageIcon("뚜벅초.png").getImage();
+		backImg[2] = new ImageIcon("메로에타.png").getImage();
+		backImg[3] = new ImageIcon("뮤.png").getImage();
+		backImg[4] = new ImageIcon("알로라.png").getImage();
+		backImg[5] = new ImageIcon("쥬피썬더.png").getImage();
+		backImg[6] = new ImageIcon("파이리.png").getImage();
+		backImg[7] = new ImageIcon("푸린.png").getImage();
+		backImg[8] = new ImageIcon("피츄.png").getImage();
+		// imageName[(int) (Math.random() *9)]
+		for (int i = 0; i < Main.pNum; i++) {
+			
+			if (i % 9 == 0) {
+				pocketMonImage[i] = new JPanel() {
+					public void paintComponent(Graphics g) {
+						setOpaque(false);
+						g.drawImage(backImg[0], 0, 0, getWidth(), getHeight(), this);
+					}
+				};
+			}
+
+			if (i % 9 == 1) {
+				if (i%100==0) {
+					pocketMonImage[i] = new JPanel() {
+						public void paintComponent(Graphics g) {
+							Image backImg = new ImageIcon("아픈토게피.png").getImage();
+							setOpaque(false);
+							g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+						}
+					};
+				}
+				else
+				{
+					pocketMonImage[i] = new JPanel() {
+						public void paintComponent(Graphics g) {
+							setOpaque(false);
+							g.drawImage(backImg[1], 0, 0, getWidth(), getHeight(), this);
+						}
+					};
+				}
+			}
+
+			if (i % 9 == 2) {
+				pocketMonImage[i] = new JPanel() {
+					public void paintComponent(Graphics g) {
+						setOpaque(false);
+						g.drawImage(backImg[2], 0, 0, getWidth(), getHeight(), this);
+					}
+				};
+			}
+
+			if (i % 9 == 3) {
+				pocketMonImage[i] = new JPanel() {
+					public void paintComponent(Graphics g) {
+						setOpaque(false);
+						g.drawImage(backImg[3], 0, 0, getWidth(), getHeight(), this);
+					}
+				};
+			}
+
+			if (i % 9 == 4) {
+				pocketMonImage[i] = new JPanel() {
+					public void paintComponent(Graphics g) {
+						setOpaque(false);
+						g.drawImage(backImg[4], 0, 0, getWidth(), getHeight(), this);
+					}
+				};
+			}
+
+			if (i % 9 == 5) {
+				pocketMonImage[i] = new JPanel() {
+					public void paintComponent(Graphics g) {
+						setOpaque(false);
+						g.drawImage(backImg[5], 0, 0, getWidth(), getHeight(), this);
+					}
+				};
+			}
+
+			if (i % 9 == 6) {
+				pocketMonImage[i] = new JPanel() {
+					public void paintComponent(Graphics g) {
+						setOpaque(false);
+						g.drawImage(backImg[6], 0, 0, getWidth(), getHeight(), this);
+					}
+				};
+			}
+
+			if (i % 9 == 7) {
+				pocketMonImage[i] = new JPanel() {
+					public void paintComponent(Graphics g) {
+						setOpaque(false);
+						g.drawImage(backImg[7], 0, 0, getWidth(), getHeight(), this);
+					}
+				};
+			}
+
+			if (i % 9 == 8) {
+				pocketMonImage[i] = new JPanel() {
+					public void paintComponent(Graphics g) {
+						setOpaque(false);
+						g.drawImage(backImg[8], 0, 0, getWidth(), getHeight(), this);
+					}
+				};
+			}
+
+			pocketMonImage[i].setSize(120, 120);
+			pocketMonImage[i].setLayout(null);
+			pocketMonImage[i].setBounds(1500, 80, 120, 120);
+			pocketMonImage[i].setVisible(true);
+		}
 
 		moon_b = new JPanel() {
 			public void paintComponent(Graphics g) {
@@ -208,103 +295,168 @@ public class frame extends JFrame {
 		contentPane.add(moon);
 		contentPane.add(sun);
 
-		for(int i = 0;i<3;i++)
-		{
+		for (int i = 0; i < 3; i++) {
 			emergency[i] = new JPanel() {
 				public void paintComponent(Graphics g) {
 					setOpaque(false);
-					setSize(80,80);
+					setSize(80, 80);
 					Image backImg = new ImageIcon("emergency.png").getImage();
 					g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 				}
 			};
-			
+
 			idle[i] = new JPanel() {
 				public void paintComponent(Graphics g) {
 					setOpaque(false);
-					setSize(80,80);
+					setSize(80, 80);
 					Image backImg = new ImageIcon("idle.png").getImage();
 					g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 				}
 			};
-			
+
 			up[i] = new JPanel() {
 				public void paintComponent(Graphics g) {
 					setOpaque(false);
-					setSize(80,80);
+					setSize(80, 80);
 					Image backImg = new ImageIcon("up.png").getImage();
 					g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 				}
 			};
-			
+
 			down[i] = new JPanel() {
 				public void paintComponent(Graphics g) {
 					setOpaque(false);
-					setSize(80,80);
+					setSize(80, 80);
 					Image backImg = new ImageIcon("down.png").getImage();
 					g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 				}
 			};
 		}
-		
-		e1_state.setBounds(1697, 551, 115, 110);//e1 상태표시 위치
-		e2_state.setBounds(1697, 670, 115, 110);//e2 상태표시 위치
-		e3_state.setBounds(1697, 790, 115, 110);//e3 상태표시 위치
-		
-		
-		for(int i = 0;i<3;i++)
-		{
+
+		e1_state.setBounds(1697, 551, 115, 110);// e1 상태표시 위치
+		e2_state.setBounds(1697, 670, 115, 110);// e2 상태표시 위치
+		e3_state.setBounds(1697, 790, 115, 110);// e3 상태표시 위치
+
+		for (int i = 0; i < 3; i++) {
 			emergency[i].setSize(10, 120);
 			emergency[i].setLayout(null);
 			emergency[i].setVisible(false);
-			
+
 			idle[i].setSize(10, 120);
 			idle[i].setLayout(null);
 			idle[i].setVisible(true);
-			
+
 			up[i].setSize(10, 120);
 			up[i].setLayout(null);
 			up[i].setVisible(false);
-			
+
 			down[i].setSize(10, 120);
 			down[i].setLayout(null);
 			down[i].setVisible(false);
-			
-			if(i==0)
-			{
+
+			if (i == 0) {
 				emergency[i].setBounds(e1_state.getBounds());
 				idle[i].setBounds(e1_state.getBounds());
 				up[i].setBounds(e1_state.getBounds());
 				down[i].setBounds(e1_state.getBounds());
-			}
-			else if(i==1)
-			{
+			} else if (i == 1) {
 				emergency[i].setBounds(e2_state.getBounds());
 				idle[i].setBounds(e2_state.getBounds());
 				up[i].setBounds(e2_state.getBounds());
 				down[i].setBounds(e2_state.getBounds());
-			}
-			else
-			{
+			} else {
 				emergency[i].setBounds(e3_state.getBounds());
 				idle[i].setBounds(e3_state.getBounds());
 				up[i].setBounds(e3_state.getBounds());
 				down[i].setBounds(e3_state.getBounds());
 			}
-			
+
 			contentPane.add(emergency[i]);
 			contentPane.add(idle[i]);
 			contentPane.add(up[i]);
 			contentPane.add(down[i]);
+
+			e_people[i] = new JLabel();
+			e_people[i].setLayout(null);
+			if (i == 0)
+				e_people[i].setBounds(e1_state.getX() + 130, e1_state.getY() - 25, 100, 100);
+			if (i == 1)
+				e_people[i].setBounds(e2_state.getX() + 130, e2_state.getY() - 25, 100, 100);
+			if (i == 2)
+				e_people[i].setBounds(e3_state.getX() + 130, e3_state.getY() - 25, 100, 100);
+			e_people[i].setFont(new Font("hp-transistor", Font.BOLD, 100));
+			e_people[i].setOpaque(false);
+			e_people[i].setForeground(new Color(0, 0, 0));
+			e_people[i].setText("0");
+			e_people[i].setVisible(true);
+
+			contentPane.add(e_people[i]);
 		}
-		
+
 		time_state.setLayout(null);
-		time_state.setFont(new Font("Octapost NBP",1,50));
+		time_state.setFont(new Font("Octapost NBP", 1, 50));
 		time_state.setBounds(1560, 210, 330, 83);
 		time_state.setVisible(true);
-		
+
 		contentPane.add(time_state);
-		
+
+		// Floor waiting person Number setting
+		for (int i = 1; i < 6; i++) {
+			FloorWaitingNum[i] = new JLabel();
+			FloorWaitingNum[i].setLayout(null);
+			FloorWaitingNum[i].setFont(new Font("hp-transistor", Font.BOLD, 100));
+			FloorWaitingNum[i].setBounds(1400, FloorLocation[i], 100, 100);
+			FloorWaitingNum[i].setVisible(true);
+			FloorWaitingNum[i].setText("0");
+			contentPane.add(FloorWaitingNum[i]);
+		}
+
+		// 여기부터 추가함!
+		mb1_o = new JPanel() {// 엘리베이터 1
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				Image backImg = new ImageIcon("open_monsterball.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		mb2_o = new JPanel() {// 엘리베이터 2
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				Image backImg = new ImageIcon("open_monsterball.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		mb3_o = new JPanel() {// 엘리베이터 3
+			public void paintComponent(Graphics g) {
+				setOpaque(false);
+				Image backImg = new ImageIcon("open_monsterball.png").getImage();
+				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		mb1_o.setSize(120, 120);
+		mb1_o.setLayout(null);
+		mb1_o.setBounds(273, 800, 115, 110);
+		mb1_o.setVisible(false);
+
+		mb2_o.setSize(120, 120);
+		mb2_o.setLayout(null);
+		mb2_o.setBounds(619, 440, 115, 110);
+		mb2_o.setVisible(false);
+
+		mb3_o.setSize(10, 120);
+		mb3_o.setLayout(null);
+		mb3_o.setBounds(980, 80, 115, 110);
+		mb3_o.setVisible(false);
+
+		contentPane.add(mb1_o);
+		contentPane.add(mb2_o);
+		contentPane.add(mb3_o);
+		// 여기까지 추가함!
+
+		setIdle(1);
+		setIdle(2);
+		setIdle(3);
+
 		init();
 	}
 
@@ -312,55 +464,98 @@ public class frame extends JFrame {
 		Sound("pocketmon.wav", true);
 	}
 
-	public void Sound(String file, boolean Loop) {
-		Clip clip;
+	public static void Sound(String file, boolean Loop) {
 		try {
+			if (clip != null)
+				clip.stop();
 			AudioInputStream ais = AudioSystem.getAudioInputStream(new BufferedInputStream(new FileInputStream(file)));
 			clip = AudioSystem.getClip();
+
 			clip.open(ais);
 			clip.start();
 			if (Loop)
 				clip.loop(-1);
-			// Loop 값이true면 사운드재생을무한반복시킵니다.
-			// false면 한번만재생시킵니다.
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
 
-	private void makeUI() {
-
-	}// 뭐 때문에 썼었는데 빈 함수가 되었을까...? //프레임 constructor 안에 너무 많은 코드가 있어서 옮기려고
-		// 만들었었찌...
-
-	public static void moveElevatorUP(int i) {
-
-		for (int j = 0; j < 180; j++) {
-			if (i == 1)
-				mb1.setBounds(273, mb1.getY() - 1, 115, 110);
-			else if (i == 2)
-				mb2.setBounds(619, mb2.getY() - 1, 115, 110);
-			else
-				mb3.setBounds(980, mb3.getY() - 1, 115, 110);
+		if (Loop == false) {
 			try {
-				Thread.sleep(5);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
+				AudioInputStream ais = AudioSystem
+						.getAudioInputStream(new BufferedInputStream(new FileInputStream("pocketmon.wav")));
+				clip = AudioSystem.getClip();
+				clip.open(ais);
+				clip.start();
+				if (true)
+					clip.loop(-1);
+
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public static void moveElevatorDOWN(int i) {
-
+	public static void moveEveryThing() {// 하나에 다 넣으면.... 되지 않을까 싶은 마음으로 도저어어언
+		allSetVisible(true);// ㅋ 되는데 넘나 복잡해.....ㅠㅠㅠㅠ
+		int a;
 		for (int j = 0; j < 180; j++) {
-			if (i == 1)
+
+			// up
+			if (Main.newC.Emove[1] == 1 && Main.newC.elevator1.getDirection() == Direction.UP
+					&& mb1.getY() != FloorLocation[Main.newC.elevator1.getFloor()])
+				mb1.setBounds(273, mb1.getY() - 1, 115, 110);
+			if (Main.newC.Emove[2] == 1 && Main.newC.elevator2.getDirection() == Direction.UP
+					&& mb2.getY() != FloorLocation[Main.newC.elevator2.getFloor()])
+				mb2.setBounds(619, mb2.getY() - 1, 115, 110);
+			if (Main.newC.Emove[3] == 1 && Main.newC.elevator3.getDirection() == Direction.UP
+					&& mb3.getY() != FloorLocation[Main.newC.elevator3.getFloor()])
+				mb3.setBounds(980, mb3.getY() - 1, 115, 110);
+			// down
+			if (Main.newC.Emove[1] == 1 && Main.newC.elevator1.getDirection() == Direction.DOWN
+					&& mb1.getY() != FloorLocation[Main.newC.elevator1.getFloor()])
 				mb1.setBounds(273, mb1.getY() + 1, 115, 110);
-			else if (i == 2)
+			if (Main.newC.Emove[2] == 1 && Main.newC.elevator2.getDirection() == Direction.DOWN
+					&& mb2.getY() != FloorLocation[Main.newC.elevator2.getFloor()])
 				mb2.setBounds(619, mb2.getY() + 1, 115, 110);
-			else
+			if (Main.newC.Emove[3] == 1 && Main.newC.elevator3.getDirection() == Direction.DOWN
+					&& mb3.getY() != FloorLocation[Main.newC.elevator3.getFloor()])
 				mb3.setBounds(980, mb3.getY() + 1, 115, 110);
 
+			// get in passenger
+	         if (Main.newC.elevator1.GetInPassengerNum != 0)
+	         {
+	            openMonsterBall(1);
+	            e1GetinPassenger();
+	         }
+	         if (Main.newC.elevator2.GetInPassengerNum != 0)
+	         {
+	            openMonsterBall(2);
+	            e2GetinPassenger();
+	         }
+	         if (Main.newC.elevator3.GetInPassengerNum != 0)
+	         {
+	            openMonsterBall(3);
+	            e3GetinPassenger();
+	         }
+	         
+	         // get out passenger
+	         if (Main.newC.elevator1.GetOutPassengerNum != 0)
+	         {
+	            openMonsterBall(1);
+	            e1GetOutPassenger();
+	         }   
+	         if (Main.newC.elevator2.GetOutPassengerNum != 0)
+	         {
+	            openMonsterBall(2);
+	            e2GetOutPassenger();
+	         }
+	         if (Main.newC.elevator3.GetOutPassengerNum != 0)
+	         {
+	            openMonsterBall(3);
+	            e3GetOutPassenger();
+	         }
+
 			try {
 				Thread.sleep(5);
 			} catch (InterruptedException e) {
@@ -368,54 +563,151 @@ public class frame extends JFrame {
 				e.printStackTrace();
 			}
 		}
+		allSetVisible(false);
+		removeAllPassenger();
+		closeMonsterBall(1);
+	    closeMonsterBall(2);
+	    closeMonsterBall(3);
 	}
 
-	public static void getPassengerIn(int passengerNum, int elevatorNum, int source) {// 1920이려나
-		int moveLocationTo = 0;
-		int floorLocation = 80 + ((5 - source) * 180);
-		if (elevatorNum == 1)
-			moveLocationTo = e1Location;
-		else if (elevatorNum == 2)
-			moveLocationTo = e2Location;
-		else
-			moveLocationTo = e3Location;
-		contentPane.add(pocketMonImage[passengerNum]);
-		pocketMonImage[passengerNum].setVisible(true);
-		while (pocketMonImage[passengerNum].getX() != moveLocationTo - 1) {
-			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() - 1, floorLocation, 120, 120);
-			try {
-				Thread.sleep(3);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+	public static void allSetVisible(boolean b) {
+		for (int i = 0; i < 6; i++) {
+			if (Main.newC.elevator1.GetInPassengerList[i] != 0) {
+				contentPane.add(pocketMonImage[Main.newC.elevator1.GetInPassengerList[i]]);
+				pocketMonImage[Main.newC.elevator1.GetInPassengerList[i]].setVisible(b);
+			}
+			if (Main.newC.elevator2.GetInPassengerList[i] != 0) {
+				contentPane.add(pocketMonImage[Main.newC.elevator2.GetInPassengerList[i]]);
+				pocketMonImage[Main.newC.elevator2.GetInPassengerList[i]].setVisible(b);
+			}
+			if (Main.newC.elevator3.GetInPassengerList[i] != 0) {
+				contentPane.add(pocketMonImage[Main.newC.elevator3.GetInPassengerList[i]]);
+				pocketMonImage[Main.newC.elevator3.GetInPassengerList[i]].setVisible(b);
+			}
+			if (Main.newC.elevator1.GetOutPassengerList[i] != 0) {
+				contentPane.add(pocketMonImage[Main.newC.elevator1.GetOutPassengerList[i]]);
+				pocketMonImage[Main.newC.elevator1.GetOutPassengerList[i]].setVisible(b);
+			}
+			if (Main.newC.elevator2.GetOutPassengerList[i] != 0) {
+				contentPane.add(pocketMonImage[Main.newC.elevator2.GetOutPassengerList[i]]);
+				pocketMonImage[Main.newC.elevator2.GetOutPassengerList[i]].setVisible(b);
+			}
+			if (Main.newC.elevator3.GetOutPassengerList[i] != 0) {
+				contentPane.add(pocketMonImage[Main.newC.elevator3.GetOutPassengerList[i]]);
+				pocketMonImage[Main.newC.elevator3.GetOutPassengerList[i]].setVisible(b);
 			}
 		}
-		pocketMonImage[passengerNum].setVisible(false);
+		mb1.setVisible(true);
+		mb2.setVisible(true);
+		mb3.setVisible(true);
 	}
 
-	public static void getPassengerOut(int passengerNum, int elevatorNum, int destination) {
+	public static void removeAllPassenger() {
+		for (int i = 0; i < 6; i++) {
+			Main.newC.elevator1.GetInPassengerList[i] = 0;
+			Main.newC.elevator2.GetInPassengerList[i] = 0;
+			Main.newC.elevator3.GetInPassengerList[i] = 0;
 
-		int moveLocationTo = 0;
-		int floorLocation = 80 + ((5 - destination) * 180);
-		if (elevatorNum == 1)
-			moveLocationTo = e1Location;
-		else if (elevatorNum == 2)
-			moveLocationTo = e2Location;
-		else
-			moveLocationTo = e3Location;
-		pocketMonImage[passengerNum].setVisible(true);
-		contentPane.add(pocketMonImage[passengerNum]);
-		pocketMonImage[passengerNum].setBounds(moveLocationTo, floorLocation, 120, 120);
-		for (int j = moveLocationTo; j > 0; j--) {
-			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() - 1, floorLocation, 120, 120);
-			try {
-				Thread.sleep(4);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			Main.newC.elevator1.GetOutPassengerList[i] = 0;
+			Main.newC.elevator2.GetOutPassengerList[i] = 0;
+			Main.newC.elevator3.GetOutPassengerList[i] = 0;
+		}
+		Main.newC.elevator1.GetInPassengerNum = 0;
+		Main.newC.elevator2.GetInPassengerNum = 0;
+		Main.newC.elevator3.GetInPassengerNum = 0;
+		Main.newC.elevator1.GetOutPassengerNum = 0;
+		Main.newC.elevator2.GetOutPassengerNum = 0;
+		Main.newC.elevator3.GetOutPassengerNum = 0;
+		Main.newC.Emove[1] = 0;
+		Main.newC.Emove[2] = 0;
+		Main.newC.Emove[3] = 0;
+		time1 = 0;
+		time2 = 0;
+		time3 = 0;
+	}
+
+	public static void e1GetinPassenger() {
+		int[] personNum = new int[6];
+		for (int i = 0; i < 6; i++) {
+			personNum[i] = Main.newC.elevator1.GetInPassengerList[i];
+			if (personNum[i] != 0 && pocketMonImage[personNum[i]].getX() >= e1Location) {
+				pocketMonImage[personNum[i]].setBounds(pocketMonImage[personNum[i]].getX() - (i + 7),
+						80 + ((5 - Main.newC.elevator1.getFloor()) * 180), 120, 120);
+				pocketMonImage[personNum[i]].setVisible(true);
 			}
 		}
-		pocketMonImage[passengerNum].setVisible(false);
+	}
+
+	public static void e2GetinPassenger() {
+		int[] personNum = new int[6];
+		for (int i = 0; i < 6; i++) {
+			personNum[i] = Main.newC.elevator2.GetInPassengerList[i];
+			if (personNum[i] != 0 && pocketMonImage[personNum[i]].getX() >= e2Location) {
+				pocketMonImage[personNum[i]].setBounds(pocketMonImage[personNum[i]].getX() - (i + 5),
+						80 + ((5 - Main.newC.elevator2.getFloor()) * 180), 120, 120);
+				pocketMonImage[personNum[i]].setVisible(true);
+			}
+		}
+	}
+
+	public static void e3GetinPassenger() {
+		int[] personNum = new int[6];
+		for (int i = 0; i < 6; i++) {
+			personNum[i] = Main.newC.elevator3.GetInPassengerList[i];
+			if (personNum[i] != 0 && pocketMonImage[personNum[i]].getX() >= e3Location) {
+				pocketMonImage[personNum[i]].setBounds(pocketMonImage[personNum[i]].getX() - (i + 3),
+						80 + ((5 - Main.newC.elevator3.getFloor()) * 180), 120, 120);
+				pocketMonImage[personNum[i]].setVisible(true);
+			}
+		}
+	}
+
+	public static void e1GetOutPassenger() {
+		int[] personNum = new int[6];
+		for (int i = 0; i < 6; i++) {
+			personNum[i] = Main.newC.elevator1.GetOutPassengerList[i];
+			if (personNum[i] != 0 && pocketMonImage[personNum[i]].getX() >= 0) {
+				if (time1 == 0)
+					pocketMonImage[personNum[i]].setBounds(e1Location,
+							80 + ((5 - Main.newC.elevator1.getFloor()) * 180), 120, 120);
+				pocketMonImage[personNum[i]].setBounds(pocketMonImage[personNum[i]].getX() - (i + 3),
+						80 + ((5 - Main.newC.elevator1.getFloor()) * 180), 120, 120);
+				pocketMonImage[personNum[i]].setVisible(true);
+			}
+		}
+		time1++;
+	}
+
+	public static void e2GetOutPassenger() {
+		int[] personNum = new int[6];
+		for (int i = 0; i < 6; i++) {
+			personNum[i] = Main.newC.elevator2.GetOutPassengerList[i];
+			if (personNum[i] != 0 && pocketMonImage[personNum[i]].getX() >= 0) {
+				if (time2 == 0)
+					pocketMonImage[personNum[i]].setBounds(e2Location,
+							80 + ((5 - Main.newC.elevator2.getFloor()) * 180), 120, 120);
+				pocketMonImage[personNum[i]].setBounds(pocketMonImage[personNum[i]].getX() - (i + 5),
+						80 + ((5 - Main.newC.elevator2.getFloor()) * 180), 120, 120);
+				pocketMonImage[personNum[i]].setVisible(true);
+			}
+		}
+		time2++;
+	}
+
+	public static void e3GetOutPassenger() {
+		int[] personNum = new int[6];
+		for (int i = 0; i < 6; i++) {
+			personNum[i] = Main.newC.elevator3.GetOutPassengerList[i];
+			if (personNum[i] != 0 && pocketMonImage[personNum[i]].getX() >= 0) {
+				if (time3 == 0)
+					pocketMonImage[personNum[i]].setBounds(e3Location,
+							80 + ((5 - Main.newC.elevator3.getFloor()) * 180), 120, 120);
+				pocketMonImage[personNum[i]].setBounds(pocketMonImage[personNum[i]].getX() - (i + 7),
+						80 + ((5 - Main.newC.elevator3.getFloor()) * 180), 120, 120);
+				pocketMonImage[personNum[i]].setVisible(true);
+			}
+		}
+		time3++;
 	}
 
 	public static void MovePassengerToWait(int passengerNum, int currentFloor) {// 1920이려나
@@ -427,7 +719,24 @@ public class frame extends JFrame {
 		while (pocketMonImage[passengerNum].getX() != 1500) {
 			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() + 1, floorLocation, 120, 120);
 			try {
-				Thread.sleep(3);
+				Thread.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		pocketMonImage[passengerNum].setVisible(false);
+	}
+
+	public static void MoveEpassengerToFinish(int passengerNum, int currentFloor) {
+		int floorLocation = 80 + ((5 - currentFloor) * 180);
+		contentPane.add(pocketMonImage[passengerNum]);
+		pocketMonImage[passengerNum].setVisible(true);
+
+		while (pocketMonImage[passengerNum].getX() != 0) {
+			pocketMonImage[passengerNum].setBounds(pocketMonImage[passengerNum].getX() - 1, floorLocation, 120, 120);
+			try {
+				Thread.sleep(1);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -460,52 +769,88 @@ public class frame extends JFrame {
 
 		double h = currentTime / 60;
 		double m = currentTime % 60;
-	
+
 		String timeLine;
 		timeLine = "";
-		timeLine += (h < 10) ? "0" + (int)h : (int)h;
+		timeLine += (h < 10) ? "0" + (int) h : (int) h;
 		timeLine += ":";
-		timeLine += (m < 10) ? "0" + (int)m : (int)m;
+		timeLine += (m < 10) ? "0" + (int) m : (int) m;
 		timer.setText(timeLine);
 
 	}
 
-
-	public static void resetState(int eNum)
-	{
+	public static void resetState(int eNum) {
 		emergency[eNum].setVisible(false);
 		idle[eNum].setVisible(false);
 		up[eNum].setVisible(false);
 		down[eNum].setVisible(false);
 	}
-	
-	public static void setEmergency(int eNum)
-	{
-		resetState(eNum-1);
-		emergency[eNum-1].setVisible(true);
+
+	public static void setEmergency(int eNum) {
+		resetState(eNum - 1);
+		emergency[eNum - 1].setVisible(true);
 	}
-	
-	public static void setIdle(int eNum)
-	{
-		resetState(eNum-1);
-		idle[eNum-1].setVisible(true);
+
+	public static void setIdle(int eNum) {
+		resetState(eNum - 1);
+		idle[eNum - 1].setVisible(true);
 	}
-	
-	public static void setUp(int eNum)
-	{
-		resetState(eNum-1);
-		up[eNum-1].setVisible(true);
+
+	public static void setUp(int eNum) {
+		resetState(eNum - 1);
+		up[eNum - 1].setVisible(true);
 	}
-	
-	public static void setDown(int eNum)
-	{
-		resetState(eNum-1);
-		down[eNum-1].setVisible(true);
+
+	public static void setDown(int eNum) {
+		resetState(eNum - 1);
+		down[eNum - 1].setVisible(true);
 	}
-	
-	public static void setStateText(String str)
-	{
+
+	public static void setStateText(String str) {
 		time_state.setText(str);
 	}
-	
+
+	public static void setFloorWaitingNum(int Floor) {
+		FloorWaitingNum[Floor].setText("" + Main.waitingPersonNum[Floor]);
+		System.out.println("FLOOR : " + Floor + " PERSON NUM : " + Main.waitingPersonNum[Floor]);
+	}
+
+	// 추가함!
+	public static void openMonsterBall(int eNum) {
+		if (eNum == 1) {
+			mb1_o.setBounds(mb1.getX(), mb1.getY(), 115, 110);
+			mb1.setVisible(false);
+			mb1_o.setVisible(true);
+		} else if (eNum == 2) {
+			mb2_o.setBounds(mb2.getX(), mb2.getY(), 115, 110);
+			mb2.setVisible(false);
+			mb2_o.setVisible(true);
+		} else if (eNum == 3) {
+			mb3_o.setBounds(mb3.getX(), mb3.getY(), 115, 110);
+			mb3.setVisible(false);
+			mb3_o.setVisible(true);
+		}
+	}
+
+	// 추가함!
+	public static void closeMonsterBall(int eNum) {
+		if (eNum == 1) {
+			mb1.setVisible(true);
+			mb1_o.setVisible(false);
+		} else if (eNum == 2) {
+			mb2.setVisible(true);
+			mb2_o.setVisible(false);
+		} else if (eNum == 3) {
+			mb3.setVisible(true);
+			mb3_o.setVisible(false);
+		}
+	}
+
+	public static void setInElevator(int eNum, int num) {
+		if (num < 10)
+			e_people[eNum - 1].setText("" + num);
+		else
+			e_people[eNum - 1].setText("F");
+	}
+
 }

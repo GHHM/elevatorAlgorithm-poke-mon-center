@@ -1,31 +1,51 @@
-import java.util.Comparator;
-import java.util.PriorityQueue;
-
-import javax.swing.JFrame;
-
 public class Main {
 
+	public static Control newC = new Control();
+	static int pNum = 1000;
+	public static PersonInfo[] person;
+	public static int []waitingPersonNum={0,0,0,0,0,0};
 	public static void main(String[] args) throws Exception {
-		Control newC = new Control();
-		PersonInfo[] person = new PersonInfo[20];
+		person = new PersonInfo[pNum];
 
 		int source = 0, dest = 0;
-		int currentTime=0, totalTime = 48;
-		person[0] = new PersonInfo(0, 0, 0);
+		int currentTime=0, totalTime = 2400;
 
 		frame f = new frame();
 
 		for (int i = 0; i < person.length; i++) {
+			if(i>(pNum*0.1)&&i<(pNum*0.5))//출근
+			{
+			source = (int) (Math.random() * 2) + 1;
+			dest = (int) (Math.random() * 3) + 3;
+			}
+		else if(i>(pNum*0.6)&&i<(pNum*0.9))//퇴근
+		{
+			dest = (int) (Math.random() * 2) + 1;
+			source = (int) (Math.random() * 3) + 3;	
+		}
+		else//나머지
+		{
 			source = (int) (Math.random() * 5) + 1;
 			dest = (int) (Math.random() * 5) + 1;
-			if (source == dest && source <= 3)
-				dest += 1;
-			else if (source == dest && source > 3)
-				dest -= 1;
-			person[i] = new PersonInfo(source, dest, i);
-			person[i].time = (int) (Math.random() * (totalTime * 0.7));
-			if (i % 19 == 0 && i != 0)
-				person[i].Emergency = Direction.EMERGENCY;
+		}
+		if (source == dest && source <= 3)
+			dest += 1;
+		else if (source == dest && source > 3)
+			dest -= 1;
+		person[i] = new PersonInfo(source, dest, i);
+		
+		if(i<(pNum*0.1))
+			person[i].time = ((int) (Math.random() * (totalTime / totalTime) * ((totalTime/24)*8)));
+		else if(i>(pNum*0.1)&&i<(pNum*0.5))
+			person[i].time = ((int) (Math.random() * (totalTime / totalTime) * ((totalTime/24)*8)))+((totalTime/24)*4);
+		else if(i>(pNum*0.4)&&i<(pNum*0.6))
+			person[i].time = ((int) (Math.random() * (totalTime / totalTime) * ((totalTime/24)*11)))+((totalTime/24)*4);//5인데 4로 줄임
+		else if(i>(pNum*0.6)&&i<(pNum*0.9))
+			person[i].time = ((int) (Math.random() * (totalTime / totalTime) * ((totalTime/24)*16)))+((totalTime/24)*4);
+		else
+			person[i].time = ((int) (Math.random() * (totalTime / totalTime) * ((totalTime/24)*20)))+((totalTime/24)*3);
+		if (i % 100 == 0 && i != 0)
+			person[i].Emergency = Direction.EMERGENCY;
 		}//랜덤으로 타는 층 내릴 층 응급...상황은 랜덤이 아니지만... ㅇㅇ 정해주는 코드!
 		
 		double fraction = 24/(double)totalTime;	//0.5
@@ -62,6 +82,11 @@ public class Main {
 			System.out.println("현재 시간 : " + currentTime);// 현재시간 체크용! 언..언젠가 없앨거야!
 														
 			for (int j = 0; j < person.length; j++) {//사람의 숫자 만큼 계속 for문을 돌림
+				if(person[j].time==currentTime&& person[j].getEntered() != 1)
+				{
+					waitingPersonNum[person[j].getSource()]++;
+					frame.setFloorWaitingNum(person[j].getSource());
+				}
 				if (person[j].time <= currentTime && person[j].getEntered() != 1) {
 					if (person[j].wait == 1) {//wait이 1이면 그 사람은 엘베를 기다리고 있는 사람임 
 						System.out.println("Person " + person[j].getPersonNum() + " (" + person[j].getSource() + " , "
@@ -89,8 +114,6 @@ public class Main {
 				}
 			}
 			if (currentTime > 1) {
-				if (newC.elevator1.getRequests().isEmpty() || !newC.elevator2.getRequests().isEmpty()
-						|| !newC.elevator3.getRequests().isEmpty())//아 리퀘스트가 없다면 굳이 엘베는 안움직임
 					newC.go(person, currentTime, totalTime);
 			}
 			currentTime++;
