@@ -16,16 +16,8 @@ public class Control {
 		for (Elevator e : elevatorList) {// 모든 엘리베이터 리스트를 불러옴
 			if (e.isIdle()) {// 만약에 엘리베이터가 비어있으면
 
-				if (currentTime >= (totalTime / 24) * 8 && currentTime < (totalTime / 24) * 11 && !e.isEmergency()) {// 출근시간에
-																														// 걸려있는데
-																														// 비어있으면
-																														// 무조건
-																														// 1층으로
-																														// 보냄.
-																														// 출근시간엔
-																														// 올라가는
-																														// 사람이
-																														// 많으니까.
+				if (currentTime >= (totalTime / 24) * 8 && currentTime < (totalTime / 24) * 11 && !e.isEmergency()) {
+					// If the elevator is empty, move elevator to first floor.
 					if (e.getFloor() != e.Top_Of_Floors) {
 						e.addRequest(1);
 						e.setFirstDirection(e.getDirection());

@@ -2,7 +2,7 @@ import java.util.Comparator;
 import java.util.PriorityQueue;
 
 public class Elevator {
-	private Direction direction = Direction.IDLE;// 엘리베이터가 현재 움직이는 방향
+	private Direction direction = Direction.IDLE;// Direction of current elevator
 	private Direction firstDirection = Direction.IDLE;// idle일 때 예를 들어 엘리베이터가
 														// 올라오고 있지만 나는 내려가고 싶을
 														// 때를 위해 넣은 방향! 나중엔 두개가
@@ -20,8 +20,8 @@ public class Elevator {
 															// 하려고 넣는거임!
 	public int GetOutPassengerList[] = { 0, 0, 0, 0, 0, 0,0,0,0,0};// 나갈 사람 리스트 동시에
 															// 움직이게 하려고 넣는거임!
-	public int GetInPassengerNum = 0;// 이 층에서 탈 사람 몇명인지 세기 위함
-	public int GetOutPassengerNum = 0;// 이 층에서 나갈 사람 몇명인지 세기 위함
+	public int GetInPassengerNum = 0;// count num of people enter current floor.
+	public int GetOutPassengerNum = 0;// count num of people get out of elevator on this floor.
 
 	Elevator(int num) {
 		this.ElevatorNum = num;

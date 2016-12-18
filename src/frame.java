@@ -42,13 +42,13 @@ public class frame extends JFrame {
 	static int e2Location = 619;
 	static int e3Location = 980;
 	static int[] FloorLocation = { 0, 800, 620, 440, 260, 80 };
-	static int time1 = 0;// 그 횟수에 엘베에서 똭 하고 출발하게 세는 변수
+	static int time1 = 0;
 	static int time2 = 0;
 	static int time3 = 0;
 
-	static JPanel mb1_o;// 이거 추가함!
-	static JPanel mb2_o;// 이거 추가함!
-	static JPanel mb3_o;// 이거 추가함!
+	static JPanel mb1_o;
+	static JPanel mb2_o;
+	static JPanel mb3_o;
 
 	static JLabel[] e_people = new JLabel[3];
 
@@ -58,7 +58,6 @@ public class frame extends JFrame {
 
 		contentPane = new JPanel() {
 			public void paintComponent(Graphics g) {// Graphics객체는 그릴수 있는 도구.
-				// 이미지처리. 배경
 				Image backImg = new ImageIcon("background.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 				setOpaque(false);
@@ -78,27 +77,26 @@ public class frame extends JFrame {
 		timer.setLayout(null);
 		timer.setBounds(1571, 52, 305, 100);
 		timer.setFont(new Font("hp-transistor", Font.BOLD, 100));
-		timer.setOpaque(false); // 글자색변경을 위해서는 true 해줘야함 // 이거 false로 해도 잘 됨!
-		// timer.setBackground(Color.WHITE); // 이것도 굳이 안해줘도 됨!
+		timer.setOpaque(false); 
 		timer.setForeground(new Color(16, 9, 100));
 		timer.setVisible(true);
 		contentPane.add(timer);
 
-		mb1 = new JPanel() {// 엘리베이터 1
+		mb1 = new JPanel() {// Elevator 1
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-		mb2 = new JPanel() {// 엘리베이터 2
+		mb2 = new JPanel() {// Elevator 2
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
 				g.drawImage(backImg, 0, 0, getWidth(), getHeight(), this);
 			}
 		};
-		mb3 = new JPanel() {// 엘리베이터 3
+		mb3 = new JPanel() {// Elevator 3
 			public void paintComponent(Graphics g) {
 				setOpaque(false);
 				Image backImg = new ImageIcon("monsterball.png").getImage();
@@ -124,8 +122,6 @@ public class frame extends JFrame {
 		contentPane.add(mb2);
 		contentPane.add(mb3);
 
-		// 이제 한 사람당 한 패널의 포켓몬...? 할당하려고요! 기다려어어어어어엉
-		// 모든 포켓몬==뚜벅초......ㅠ 흡
 		backImg[0] = new ImageIcon("가디안.png").getImage();
 		backImg[1] = new ImageIcon("뚜벅초.png").getImage();
 		backImg[2] = new ImageIcon("메로에타.png").getImage();
@@ -135,7 +131,6 @@ public class frame extends JFrame {
 		backImg[6] = new ImageIcon("파이리.png").getImage();
 		backImg[7] = new ImageIcon("푸린.png").getImage();
 		backImg[8] = new ImageIcon("피츄.png").getImage();
-		// imageName[(int) (Math.random() *9)]
 		for (int i = 0; i < Main.pNum; i++) {
 			
 			if (i % 9 == 0) {

@@ -1,29 +1,29 @@
 public class Main {
 
 	public static Control newC = new Control();
-	static int pNum = 1000;
+	static int pNum = 100;
 	public static PersonInfo[] person;
 	public static int []waitingPersonNum={0,0,0,0,0,0};
 	public static void main(String[] args) throws Exception {
 		person = new PersonInfo[pNum];
 
 		int source = 0, dest = 0;
-		int currentTime=0, totalTime = 2400;
+		int currentTime=0, totalTime = 240;
 
 		frame f = new frame();
 
 		for (int i = 0; i < person.length; i++) {
-			if(i>(pNum*0.1)&&i<(pNum*0.5))//출근
+			if(i>(pNum*0.1)&&i<(pNum*0.5))//office-going
 			{
 			source = (int) (Math.random() * 2) + 1;
 			dest = (int) (Math.random() * 3) + 3;
 			}
-		else if(i>(pNum*0.6)&&i<(pNum*0.9))//퇴근
+		else if(i>(pNum*0.6)&&i<(pNum*0.9))//quitting
 		{
 			dest = (int) (Math.random() * 2) + 1;
 			source = (int) (Math.random() * 3) + 3;	
 		}
-		else//나머지
+		else
 		{
 			source = (int) (Math.random() * 5) + 1;
 			dest = (int) (Math.random() * 5) + 1;
@@ -44,9 +44,9 @@ public class Main {
 			person[i].time = ((int) (Math.random() * (totalTime / totalTime) * ((totalTime/24)*16)))+((totalTime/24)*4);
 		else
 			person[i].time = ((int) (Math.random() * (totalTime / totalTime) * ((totalTime/24)*20)))+((totalTime/24)*3);
-		if (i % 100 == 0 && i != 0)
+		if (i % 50 == 0 && i != 0)
 			person[i].Emergency = Direction.EMERGENCY;
-		}//랜덤으로 타는 층 내릴 층 응급...상황은 랜덤이 아니지만... ㅇㅇ 정해주는 코드!
+		}//Assign emergency state
 		
 		double fraction = 24/(double)totalTime;	//0.5
 		double time = 0;
@@ -77,20 +77,20 @@ public class Main {
 			{
 				frame.setStateText("normal");
 			}
-			// 출퇴근 아이콘 바꾸기!
+			// Change icon! sun to moon vice versa
 			
-			System.out.println("현재 시간 : " + currentTime);// 현재시간 체크용! 언..언젠가 없앨거야!
+			System.out.println("현재 시간 : " + currentTime);// checking current time
 														
-			for (int j = 0; j < person.length; j++) {//사람의 숫자 만큼 계속 for문을 돌림
+			for (int j = 0; j < person.length; j++) {
 				if(person[j].time==currentTime&& person[j].getEntered() != 1)
 				{
 					waitingPersonNum[person[j].getSource()]++;
 					frame.setFloorWaitingNum(person[j].getSource());
 				}
 				if (person[j].time <= currentTime && person[j].getEntered() != 1) {
-					if (person[j].wait == 1) {//wait이 1이면 그 사람은 엘베를 기다리고 있는 사람임 
+					if (person[j].wait == 1) {// if 'wait' is 1, the person is waiting elevator 
 						System.out.println("Person " + person[j].getPersonNum() + " (" + person[j].getSource() + " , "
-								+ person[j].getDestination() + " )");// 이 사람의 목적지와 탈 층을 출력해줌
+								+ person[j].getDestination() + " )");// print on screen source and destination floor
 						if (person[j].getSource() - person[j].getDestination() < 0) {
 							if (newC.pressButton(person[j].getSource(), Direction.UP, person[j].Emergency) == 1) {//pressButton의 return 값이 1이여야만 엘베 버튼을 누를 수 있음.
 								person[j].wait = 0;
@@ -124,7 +124,7 @@ public class Main {
 		frame.setStateText("end");
 		
 		System.out.println("Time out");
-		int num = 0;// 완료된 사람 숫자 세려고
+		int num = 0;// number of completed request
 		for (int i = 0; i < person.length; i++) {
 			if (person[i].getFinished() == 1)
 				num++;
